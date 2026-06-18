@@ -1,0 +1,5 @@
+interface:
+  display_name: "Skill Guide"
+  short_description: "解读陌生 skill 并生成 HTML 使用说明书"
+  brand_color: "#48D5C4"
+  default_prompt: "Use $skill-guide to explain this skill folder, judge its completeness, suggest pairings, and generate a practical HTML usage guide."

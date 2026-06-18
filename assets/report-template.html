@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{REPORT_TITLE}}</title>
+  <style>
+    :root {
+      --ink: #202124;
+      --body: #34363a;
+      --muted: #74777d;
+      --line: #eceff2;
+      --dash: #d7dbe0;
+      --panel: #fbfbfc;
+      --accent: #ff4d2e;
+      --ok: #0f8a4b;
+      --warn: #e5484d;
+      --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      --mono: "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #fff;
+      color: var(--body);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.76;
+      letter-spacing: 0;
+    }
+
+    .page {
+      width: min(980px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 58px 0 84px;
+    }
+
+    .masthead {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 32px;
+      padding-bottom: 50px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 64px;
+    }
+
+    .title-wrap {
+      position: relative;
+      padding-left: 13px;
+    }
+
+    .title-wrap::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 4px;
+      height: 25px;
+      background: var(--accent);
+      border-radius: 999px;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 30px;
+      line-height: 1.2;
+      font-weight: 760;
+    }
+
+    .subtitle {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .brand {
+      margin-top: 8px;
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 720;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 14px;
+      margin-right: 8px;
+    }
+
+    section { margin-top: 64px; }
+
+    h2 {
+      margin: 0 0 28px;
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.28;
+      font-weight: 760;
+    }
+
+    .box {
+      border: 1px dashed var(--dash);
+      border-radius: 4px;
+      padding: 30px 34px;
+      background: var(--panel);
+    }
+
+    .stack {
+      display: grid;
+      gap: 0;
+    }
+
+    .item {
+      padding: 0 0 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .item + .item { padding-top: 24px; }
+    .item:last-child { padding-bottom: 0; border-bottom: 0; }
+
+    .label {
+      margin-bottom: 10px;
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 620;
+    }
+
+    .value {
+      color: var(--body);
+      font-size: 16px;
+    }
+
+    .ok { color: var(--ok); font-weight: 700; }
+    .hot { color: var(--accent); font-weight: 700; }
+    .warn { color: var(--warn); font-weight: 700; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      margin-left: 8px;
+      padding: 0 8px;
+      border: 1px solid rgba(15, 138, 75, .28);
+      border-radius: 999px;
+      color: var(--ok);
+      background: rgba(15, 138, 75, .06);
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 650;
+      vertical-align: 2px;
+    }
+
+    .badge.need {
+      border-color: rgba(229, 72, 77, .26);
+      color: var(--warn);
+      background: rgba(229, 72, 77, .06);
+    }
+
+    .meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-bottom: 18px;
+      padding: 14px 18px;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: var(--panel);
+      font-size: 14px;
+    }
+
+    .meta-cell {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .meta-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .meta-value {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .judge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border: 1px solid #dfe3e7;
+      border-right: 0;
+      border-bottom: 0;
+      background: #fff;
+    }
+
+    .judge-grid > * {
+      min-height: 104px;
+      padding: 18px 20px;
+      border-right: 1px solid #dfe3e7;
+      border-bottom: 1px solid #dfe3e7;
+      background: #fff;
+    }
+
+    .judge-value {
+      margin-top: 8px;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.45;
+      font-weight: 720;
+    }
+
+    .judge-note {
+      margin-top: 8px;
+      color: var(--body);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .content-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .relation-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin: 14px 0 18px;
+    }
+
+    .relation-step {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 14px;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.35;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .prompt-card {
+      border: 1px dashed var(--dash);
+      border-radius: 4px;
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .prompt-card + .prompt-card {
+      margin-top: 22px;
+    }
+
+    .prompt-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .prompt-title {
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .prep-body {
+      padding: 30px 34px;
+      background: var(--panel);
+    }
+
+    .copy-btn {
+      flex: 0 0 auto;
+      min-height: 34px;
+      padding: 0 14px;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .copy-btn.is-copied {
+      border-color: rgba(15, 138, 75, .28);
+      color: var(--ok);
+      background: rgba(15, 138, 75, .06);
+    }
+
+    pre {
+      margin: 0;
+      padding: 22px 26px;
+      color: var(--ink);
+      background: #fff;
+      font-family: var(--mono);
+      font-size: 15px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      border: 1px solid #dfe3e7;
+      padding: 13px 14px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      width: 160px;
+      color: var(--ink);
+      background: #f6f7f8;
+      font-weight: 700;
+    }
+
+    td { background: #fff; }
+
+    .footer {
+      margin-top: 72px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 28px, 980px);
+        padding-top: 34px;
+      }
+
+      .masthead,
+      .judge-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .masthead {
+        gap: 18px;
+        margin-bottom: 42px;
+      }
+
+      section { margin-top: 42px; }
+      .box { padding: 22px 18px; }
+      h1 { font-size: 25px; }
+      h2 { font-size: 21px; }
+
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <div class="title-wrap">
+        <h1>{{SKILL_NAME}} 使用说明书</h1>
+        <p class="subtitle">{{SUMMARY}}</p>
+      </div>
+      <div class="brand"><span class="brand-mark">▣</span>skill-guide</div>
+    </header>
+
+    <section>
+      <h2>1. 一句话结论</h2>
+      <div class="box">
+        <div class="stack">
+          <div class="item">
+            <div class="label">结论</div>
+            <div class="value">{{ONE_LINE_RECOMMENDATION}}</div>
+          </div>
+          <div class="item">
+            <div class="label">当前判断</div>
+            <div class="value">{{VERDICT}}</div>
+          </div>
+          <div class="item">
+            <div class="label">风险提示</div>
+            <div class="value">{{SCORE_NOTE}}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. 快速判断</h2>
+      <div class="meta-strip">
+        <div class="meta-cell"><span class="meta-label">完整度</span><span class="meta-value hot">{{SCORE}}</span></div>
+        <div class="meta-cell"><span class="meta-label">对象类型</span><span class="meta-value">{{OBJECT_TYPE}}</span></div>
+        <div class="meta-cell"><span class="meta-label">搭配模式</span><span class="meta-value">{{PAIRING_MODE}}</span></div>
+      </div>
+      <div class="judge-grid">
+        {{OBJECT_CARDS}}
+      </div>
+    </section>
+
+    <section>
+      <h2>3. 直接试用</h2>
+      <div class="prompt-card">
+        <div class="prompt-head">
+          <div class="prompt-title">第一次试用 prompt</div>
+          <button class="copy-btn" type="button" data-copy-target="trial-prompt">复制</button>
+        </div>
+        <pre id="trial-prompt">{{TRIAL_PROMPT}}</pre>
+      </div>
+      <div class="prompt-card">
+        <div class="prompt-head">
+          <div>
+            <div class="prompt-title">高阶用法</div>
+            <div class="value">不用一开始就准备，想让结果更稳时再补充</div>
+          </div>
+        </div>
+        <div class="prep-body">
+          {{PREP_CARDS}}
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. 这个 skill 是什么</h2>
+      <div class="content-grid">
+        {{USAGE_CARDS}}
+      </div>
+    </section>
+
+    <section>
+      <h2>5. 搭配使用建议</h2>
+      <div class="content-grid">
+        {{PAIRING_STEPS}}
+      </div>
+    </section>
+
+    <section>
+      <h2>6. 什么时候适合用</h2>
+      <div class="content-grid">
+        {{BOUNDARY_CARDS}}
+      </div>
+    </section>
+
+    <section>
+      <h2>7. 最好能产出什么</h2>
+      <table>
+        {{REAL_IO}}
+      </table>
+    </section>
+
+    <section>
+      <h2>8. 完整度与风险</h2>
+      <div class="content-grid">
+        {{RISK_CARDS}}
+      </div>
+    </section>
+
+    <section>
+      <h2>9. 试用失败后怎么找我修</h2>
+      <div class="box">
+        {{FEEDBACK_TICKET}}
+      </div>
+    </section>
+
+    <p class="footer">{{FOOTER}}</p>
+  </main>
+  <script>
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+
+      const area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      document.body.removeChild(area);
+      return Promise.resolve();
+    }
+
+    document.querySelectorAll(".copy-btn").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const target = document.getElementById(button.dataset.copyTarget);
+        if (!target) return;
+
+        const originalText = button.textContent;
+        try {
+          await copyText(target.textContent.trim());
+          button.textContent = "已复制";
+          button.classList.add("is-copied");
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.classList.remove("is-copied");
+          }, 1400);
+        } catch (error) {
+          button.textContent = "复制失败";
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 1400);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>frontend-design 使用说明书</title>
+  <style>
+    :root {
+      --ink: #202124;
+      --body: #34363a;
+      --muted: #74777d;
+      --line: #eceff2;
+      --dash: #d7dbe0;
+      --panel: #fbfbfc;
+      --accent: #ff4d2e;
+      --ok: #0f8a4b;
+      --warn: #e5484d;
+      --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      --mono: "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #fff;
+      color: var(--body);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.76;
+      letter-spacing: 0;
+    }
+
+    .page {
+      width: min(980px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 58px 0 84px;
+    }
+
+    .masthead {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 32px;
+      padding-bottom: 50px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 64px;
+    }
+
+    .title-wrap {
+      position: relative;
+      padding-left: 13px;
+    }
+
+    .title-wrap::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 4px;
+      height: 25px;
+      background: var(--accent);
+      border-radius: 999px;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 30px;
+      line-height: 1.2;
+      font-weight: 760;
+    }
+
+    .subtitle {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .brand {
+      margin-top: 8px;
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 720;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 14px;
+      margin-right: 8px;
+    }
+
+    section { margin-top: 64px; }
+
+    h2 {
+      margin: 0 0 28px;
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.28;
+      font-weight: 760;
+    }
+
+    .box {
+      border: 1px dashed var(--dash);
+      border-radius: 4px;
+      padding: 30px 34px;
+      background: var(--panel);
+    }
+
+    .stack { display: grid; gap: 0; }
+
+    .item {
+      padding: 0 0 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .item + .item { padding-top: 24px; }
+    .item:last-child { padding-bottom: 0; border-bottom: 0; }
+
+    .label {
+      margin-bottom: 10px;
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 620;
+    }
+
+    .value { color: var(--body); font-size: 16px; }
+
+    .ok { color: var(--ok); font-weight: 700; }
+    .hot { color: var(--accent); font-weight: 700; }
+    .warn { color: var(--warn); font-weight: 700; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      margin-left: 8px;
+      padding: 0 8px;
+      border: 1px solid rgba(15, 138, 75, .28);
+      border-radius: 999px;
+      color: var(--ok);
+      background: rgba(15, 138, 75, .06);
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 650;
+      vertical-align: 2px;
+    }
+
+    .badge.need {
+      border-color: rgba(229, 72, 77, .26);
+      color: var(--warn);
+      background: rgba(229, 72, 77, .06);
+    }
+
+    .badge.unknown {
+      border-color: rgba(116, 119, 125, .3);
+      color: var(--muted);
+      background: rgba(116, 119, 125, .06);
+    }
+
+    .judge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border: 1px solid #dfe3e7;
+      border-right: 0;
+      border-bottom: 0;
+      background: #fff;
+    }
+
+    .judge-grid > * {
+      min-height: 104px;
+      padding: 18px 20px;
+      border-right: 1px solid #dfe3e7;
+      border-bottom: 1px solid #dfe3e7;
+      background: #fff;
+    }
+
+    .judge-value {
+      margin-top: 8px;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.45;
+      font-weight: 720;
+    }
+
+    .judge-note {
+      margin-top: 8px;
+      color: var(--body);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .content-grid { display: grid; gap: 20px; }
+
+    .relation-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin: 14px 0 18px;
+    }
+
+    .relation-step {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 14px;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.35;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .prompt-card {
+      border: 1px dashed var(--dash);
+      border-radius: 4px;
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .prompt-card + .prompt-card { margin-top: 22px; }
+
+    .prompt-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .prompt-title {
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .prep-body {
+      padding: 30px 34px;
+      background: var(--panel);
+    }
+
+    .copy-btn {
+      flex: 0 0 auto;
+      min-height: 34px;
+      padding: 0 14px;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .copy-btn.is-copied {
+      border-color: rgba(15, 138, 75, .28);
+      color: var(--ok);
+      background: rgba(15, 138, 75, .06);
+    }
+
+    pre {
+      margin: 0;
+      padding: 22px 26px;
+      color: var(--ink);
+      background: #fff;
+      font-family: var(--mono);
+      font-size: 15px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid #dfe3e7;
+      padding: 13px 14px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      width: 50%;
+      color: var(--ink);
+      background: #f6f7f8;
+      font-weight: 700;
+    }
+
+    td { background: #fff; }
+
+    .footer {
+      margin-top: 72px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 28px, 980px);
+        padding-top: 34px;
+      }
+      .masthead, .judge-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+      .masthead { gap: 18px; margin-bottom: 42px; }
+      section { margin-top: 42px; }
+      .box { padding: 22px 18px; }
+      h1 { font-size: 25px; }
+      h2 { font-size: 21px; }
+      table { display: block; overflow-x: auto; white-space: nowrap; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <div class="title-wrap">
+        <h1>frontend-design 使用说明书</h1>
+        <p class="subtitle">Anthropic 官方放出的纯指导型 skill — 让 Claude 写前端时跳出"通用 AI 美学"</p>
+      </div>
+      <div class="brand"><span class="brand-mark">▣</span>skill-guide</div>
+    </header>
+
+    <section>
+      <h2>1. 一句话结论</h2>
+      <div class="box">
+        <div class="stack">
+          <div class="item">
+            <div class="label">结论</div>
+            <div class="value">已安装、可直接试用。让 Claude 写网页 / 组件 / 海报 / dashboard 时,产出会更有"设计意图",远离 Inter + 紫色渐变这种 AI 套娃美学。<span class="ok">解读阶段完全只读,零破坏。</span></div>
+          </div>
+          <div class="item">
+            <div class="label">当前判断</div>
+            <div class="value"><span class="ok">可以使用</span>。SKILL.md 只有 42 行,但触发语义清晰、约束明确(列出禁用字体 / 禁用配色 / 必须做的事),是 Anthropic 官方 skill 的"低字数高密度"风格。</div>
+          </div>
+          <div class="item">
+            <div class="label">风险提示</div>
+            <div class="value"><span class="warn">效果强度上限取决于 prompt</span>。一句"做个 landing page"和"做个 brutalist editorial 风格、1950s magazine 排版的 landing page",产出差距巨大。skill 自己不会替你做风格选择。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. 快速判断</h2>
+      <div class="judge-grid">
+        <div>
+          <div class="label">完整度</div>
+          <div class="judge-value"><span class="hot">85 / 100</span></div>
+          <div class="judge-note">触发覆盖广(组件 / 页面 / dashboard / 海报)、禁用清单具体、原则简洁。扣分在没有正反例对照、没有 examples/、没有可复制的风格档案。</div>
+        </div>
+        <div>
+          <div class="label">推荐动作</div>
+          <div class="judge-value"><span class="ok">直接试用</span></div>
+          <div class="judge-note">写一个真实需求(landing page / dashboard / 海报)给它,先体感一下"AI 通用美学"和"frontend-design 加持"的差异。</div>
+        </div>
+        <div>
+          <div class="label">最大风险</div>
+          <div class="judge-value"><span class="warn">没有视觉锚点</span></div>
+          <div class="judge-note">SKILL.md 列了 11 种"风格关键词"(brutalist / 编辑型 / art deco……),但没附参考图、没附配色档、没附字体推荐。LLM 对每种风格的理解可能漂移。</div>
+        </div>
+        <div>
+          <div class="label">直接使用风险</div>
+          <div class="judge-value"><span class="ok">极低</span></div>
+          <div class="judge-note">纯指导型,不动文件、不调 API、不需要登录,只影响 Claude 写代码时的风格偏向。</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. 直接试用</h2>
+      <div class="prompt-card">
+        <div class="prompt-head">
+          <div class="prompt-title">第一次试用 prompt(基础)</div>
+          <button class="copy-btn" type="button" data-copy-target="trial-prompt">复制</button>
+        </div>
+        <pre id="trial-prompt">用 frontend-design 给我做一个 landing page,主题:一个独立咖啡品牌叫 "MONO".
+
+要求:
+- 选一个"非通用"的设计方向(brutalist / editorial / art deco / 任何不常见的)
+- 字体不要 Inter / Roboto / 系统字体
+- 配色不要紫色渐变 + 白底
+- 一定要有一个让人记住的视觉锚点(不规则版式 / grain 噪点 / 异形 mask 等)
+- 输出可直接打开的 HTML/CSS,不依赖远程 CDN</pre>
+      </div>
+      <div class="prompt-card">
+        <div class="prompt-head">
+          <div>
+            <div class="prompt-title">高阶用法</div>
+            <div class="value">不用一开始就准备,想让结果更稳时再补充</div>
+          </div>
+        </div>
+        <div class="prep-body">
+          <div class="stack">
+            <div class="item">
+              <div class="label">Pro 版 — 让风格落地更准</div>
+              <div class="value">补一句风格锚定:"参考 1970s Swiss design / Wim Crouwel 字体网格"或"参考日本杂志 IDEA 的版式语言"。skill 知道你想要什么具体的设计语境,产出会显著锐化。</div>
+            </div>
+            <div class="item">
+              <div class="label">Plus 版 — 复杂场景</div>
+              <div class="value">
+                · <strong>多页面体系</strong>:先让 frontend-design 输出一份"风格档案"(色板 / 字体对 / 间距尺度 / 装饰元素清单),后续每个页面都让 Claude 引用这份档案,避免风格漂移。<br>
+                · <strong>设计稿对照</strong>:你已有 Figma / Relay / 截图,把图丢给 Claude 一起 prompt,frontend-design 会偏向"匹配你的视觉",而不是它自己的偏好。<br>
+                · <strong>React / Vue 工程</strong>:加一句"用 Motion 库做入场动画,只在 hero 区做一次 staggered reveal",避免 micro-interaction 过载。<br>
+                · <strong>Dark mode 切换</strong>:明确说"做暗色主题为主,可选亮色",否则它会默认生成亮色。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. 这个 skill 是什么</h2>
+      <div class="content-grid">
+        <div class="box">
+          <div class="label">类型 — 单 skill(纯指导型,Anthropic 官方)</div>
+          <div class="value">目录顶层只有 <code>SKILL.md</code> 和 <code>LICENSE.txt</code>,<strong>无脚本、无 references、无 examples、无 agents/openai.yaml</strong>。这是典型的"低字数高密度"指导型 skill — 整份说明 42 行,靠精确的禁用 / 必须项来约束 LLM 的风格输出。</div>
+        </div>
+        <div class="box">
+          <div class="label">包含什么(2 个文件)</div>
+          <div class="relation-flow">
+            <div class="relation-step">SKILL.md<br><span style="font-weight:500;font-size:13px;color:var(--muted)">触发 + 全部设计原则</span></div>
+            <div class="relation-step">LICENSE.txt<br><span style="font-weight:500;font-size:13px;color:var(--muted)">Apache 2.0 授权</span></div>
+            <div class="relation-step">(无 examples / scripts)<br><span style="font-weight:500;font-size:13px;color:var(--muted)">所有效果靠 LLM 实时产出</span></div>
+          </div>
+          <div class="value"><strong>怎么配合:</strong>SKILL.md 单文件承载全部能力,分四节:Design Thinking(让 Claude 先选风格再写)、Frontend Aesthetics Guidelines(字体 / 配色 / 动效 / 版式 / 背景五大维度)、禁用清单(Inter / Roboto / Arial / 紫色渐变 / 系统字体 / 通用版式)、复杂度匹配原则。<code>LICENSE.txt</code> 只是合规文件,不影响使用。</div>
+        </div>
+        <div class="box">
+          <div class="label">不负责什么</div>
+          <div class="value">
+            · <strong>不替你选风格</strong> — 你必须给主题或风格关键词,否则它只能默认猜。<br>
+            · <strong>不生成图片资源</strong> — 配图 / 插画 / 图标要另外搭配。<br>
+            · <strong>不验证渲染效果</strong> — 输出的 HTML 是否好看,要自己打开看,或搭配浏览器预览能力。<br>
+            · <strong>不做内容文案</strong> — 它管的是视觉,文案需要你自己给或搭配写作型 skill。<br>
+            · <strong>不保证可访问性</strong> — Maximalist 风格往往 a11y 较差,要主动要求"WCAG AA / 可键盘导航"。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>5. 搭配使用建议</h2>
+      <div class="content-grid">
+        <div class="box">
+          <div class="label">单独用 — 看场景</div>
+          <div class="value">做单页 demo / 海报 / 一次性页面 — 单独够用。做完整产品 / 多页站点 / 长期维护的设计系统 — 不够,需要前置和后置搭配。</div>
+        </div>
+        <div class="box">
+          <div class="label">最佳搭配(前置)</div>
+          <div class="value">
+            · <strong>relay-to-design-md</strong> <span class="badge">已有</span> — 设计师已有 Relay / Figma 稿,先生成 design.md,再让 frontend-design 按 design.md 落地代码,避免它自由发挥跑偏。<br>
+            · <strong>deep-research</strong> <span class="badge">已有</span> — 做陌生行业 / 陌生品牌时,先调研视觉参考,再让 frontend-design 锚定到具体的设计语言。
+          </div>
+        </div>
+        <div class="box">
+          <div class="label">最佳搭配(后置)</div>
+          <div class="value">
+            · <strong>verify</strong> <span class="badge">已有</span> — 生成 HTML 后用 verify 真的打开页面,看渲染、看响应式、看动效是否过载。<br>
+            · <strong>code-review / simplify</strong> <span class="badge">已有</span> — Maximalist 输出的 CSS 容易冗余,事后清理一遍。
+          </div>
+        </div>
+        <div class="box">
+          <div class="label">可选搭配</div>
+          <div class="value">
+            · <strong>skill-guide</strong> <span class="badge">已有</span> — 做完一份成品后,反向用 skill-guide 把"我喜欢的风格选择 / 用了哪些字体 / 配色"沉淀成自己的 design profile。<br>
+            · <strong>frontend-design 自身组合</strong> — 多页面项目里,先让它生成"风格档案",后续每页都引用,自我搭配。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>6. 什么时候适合用</h2>
+      <div class="content-grid">
+        <div class="box">
+          <div class="label">最适合</div>
+          <div class="value">需要一份"看上去不像 ChatGPT 默认风格"的前端产物 — landing page、品牌官网、Notion 替代品、海报、艺术家个人站、独立产品发布页、editorial 文章页等。</div>
+        </div>
+        <div class="box">
+          <div class="label">什么时候用</div>
+          <div class="value">
+            · 给客户做提案、做对外发布的页面、做有品牌调性的产品。<br>
+            · 上一版 Claude 给的页面"看起来很 AI",想换风格。<br>
+            · 想体验一下 brutalist / editorial / art deco 这些不常见美学的实现。<br>
+            · 写 React / Vue 组件库,想要每个组件都有视觉锚点而不是"通用样式"。
+          </div>
+        </div>
+        <div class="box">
+          <div class="label">不适合</div>
+          <div class="value">
+            · 内部 admin / 工具类页面 — 这些场景要克制和功能性,frontend-design 容易过度装饰。明确要求"极简、专业、无装饰"反而更好。<br>
+            · 已有强约束的设计系统 — 公司有完整 design tokens / 组件库时,frontend-design 的风格选择会和现有系统冲突,改用 design 系统的具体规则。<br>
+            · 对可访问性 / 性能要求极高的场景 — Maximalist 输出可能 a11y 差、首屏慢,需要明确指标约束。<br>
+            · 后端 / 工具脚本 / 非视觉任务 — 完全无关。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>7. 最好能产出什么</h2>
+      <table>
+        <thead>
+          <tr><th>用户提供的资料示例</th><th>形成的对应结果示例</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>"做个 landing page,主题是独立咖啡品牌 MONO"</td>
+            <td>一份完整 HTML/CSS,有明确风格(比如 brutalist 黑白 + serif 大标题 + grain 噪点),独特字体对(显示字体 + 正文字体),自定义动效(staggered reveal),可直接打开</td>
+          </tr>
+          <tr>
+            <td>"做一个数据看板,展示销售指标,要冷峻"</td>
+            <td>暗色主题 + 等宽字体 + 不规则网格 + 冷色高对比配色;数据卡片有微动画但克制;不会出现紫色渐变和默认 chart.js 配色</td>
+          </tr>
+          <tr>
+            <td>"给我做一张海报"</td>
+            <td>非常规版式(对角线 / overlap / 裁切),独特字体处理(变形 / 网格化 / 反白),装饰元素(几何 / 噪点 / 异形 mask),CSS-only 实现,可直接 print</td>
+          </tr>
+          <tr>
+            <td>"React 组件:一个文章卡片"</td>
+            <td>不止是 box-shadow + border-radius;会有 hover 时的揭示动画、独特的标签处理、有意识的字体层级,Motion 库加微交互(如果可用)</td>
+          </tr>
+          <tr>
+            <td>"美化这个已有页面"(给一段普通 HTML)</td>
+            <td>识别现有结构 → 选定一个统一风格方向 → 重写 CSS / 加装饰层 / 替换字体配色 → 给一两个标志性细节(custom cursor / scroll trigger / grain layer)</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2"><strong>真实输出位置:</strong>HTML/CSS 直接写到 Claude 的回复里,或写到当前工作区的 .html 文件。<strong>真实输入接受:</strong>纯文字需求、设计图片(可读)、Relay/Figma 链接(配合其他 skill)、已有 HTML 片段。</td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+
+    <section>
+      <h2>8. 完整度与风险</h2>
+      <div class="content-grid">
+        <div class="box">
+          <div class="label">完整度 <span class="hot">85 / 100</span> — 可生产使用</div>
+          <div class="value">42 行 SKILL.md 写得很精,触发宽、禁用具体、原则简洁。Anthropic 官方风格,低字数高密度。扣分主要在引导素材而非核心机制。</div>
+        </div>
+        <div class="box">
+          <div class="label">风险 1 — 缺少视觉锚点 <span class="warn">理解漂移</span></div>
+          <div class="value">
+            <strong>用户会看到:</strong>SKILL.md 列了 brutalist / editorial / art deco / industrial 等 11 种风格关键词,但没有任何参考图、配色档、字体清单。LLM 对"brutalist"的理解可能是 90s 极简,也可能是粗野水泥纹理。<br>
+            <strong>影响:</strong>同一句 prompt 跑两次,风格走向会有明显差异。需要靠 prompt 自己锚定参考来源。<br>
+            <strong>怎么处理:</strong>用 Pro 版 prompt 补充参考(具体设计师 / 杂志 / 网站名)。skill 侧的修复咨询 prompt:<br>
+            <em>"在 frontend-design 旁加一份 references/style-archetypes.md,每种风格关键词配一行视觉参考(具体设计师名 / 网站名 / 字体推荐 / 经典色)。"</em>
+          </div>
+        </div>
+        <div class="box">
+          <div class="label">风险 2 — 没有 examples/ 看产物 <span class="warn">引导缺口</span></div>
+          <div class="value">
+            <strong>用户会看到:</strong>没有示例 HTML / 截图,新用户不知道"frontend-design 启用前 vs 启用后"差距在哪。<br>
+            <strong>影响:</strong>低估 skill 的价值,或对它的产物有不切实际的期待。<br>
+            <strong>怎么处理:</strong>跑一次基础 prompt 留个产物在本地;团队里建 1 份"frontend-design 风格档案"作为内部参考。
+          </div>
+        </div>
+        <div class="box">
+          <div class="label">风险 3 — 容易过度装饰 <span class="warn">场景错配</span></div>
+          <div class="value">
+            <strong>用户会看到:</strong>对 admin 页面、工具类页面、纯内容型页面,LLM 会强行加视觉锚点和动效,结果反而干扰阅读 / 操作。<br>
+            <strong>影响:</strong>给非品牌场景做工具页时,需要主动说"克制,不要装饰",否则容易过载。<br>
+            <strong>怎么处理:</strong>明确说"refined minimalist,无动效,无装饰背景,只用 1 种字体"。SKILL.md 自己也提到了"minimalism 也是一种选择",但默认会偏向 maximalist。
+          </div>
+        </div>
+        <div class="box">
+          <div class="label">风险 4 — 可访问性容易被忽略 <span class="warn">默认弱项</span></div>
+          <div class="value">
+            <strong>用户会看到:</strong>SKILL.md 没强调 a11y。Maximalist 设计常见对比度不够、键盘焦点缺失、动效干扰阅读。<br>
+            <strong>影响:</strong>对外发布前需要单独检查;不能直接交付给有 a11y 合规要求的客户。<br>
+            <strong>怎么处理:</strong>prompt 里加"满足 WCAG AA 对比度,可键盘导航,prefers-reduced-motion 时禁用动效"。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>9. 试用失败后怎么找我修</h2>
+      <div class="box">
+        <div class="stack">
+          <div class="item">
+            <div class="label">建议动作顺序</div>
+            <div class="value">
+              <strong>1. 先试用</strong> — skill 已通过 cc-switch 单源 + 双端软链接安装(<code>~/.claude/skills/frontend-design</code>、<code>~/.codex/skills/frontend-design</code> 都指向 <code>~/.cc-switch/skills/frontend-design</code>),触发即用。<br>
+              <strong>2. 反馈样例</strong> — 跑一次基础 prompt + 一次 Pro 版 prompt,把两份产物 + 你期望但没出现的视觉特征一起带回。<br>
+              <strong>3. 修复副本</strong> — 不直接改 cc-switch 里的 SKILL.md;复制到 <code>~/.cc-switch/skills/frontend-design-fix-001/</code> 改,验证后再合回。<br>
+              <strong>4. 归档</strong> — 不用就删两个软链接(<code>rm ~/.claude/skills/frontend-design ~/.codex/skills/frontend-design</code>),源目录保留。
+            </div>
+          </div>
+          <div class="item">
+            <div class="label">反馈模板(可复制)</div>
+            <div class="value">
+              <pre id="feedback-template" style="background:#fff;border:1px solid var(--line);font-size:14px;">我跑了 frontend-design,prompt 是: [你的 prompt]
+生成的 HTML: [path 或片段]
+
+不对劲的地方:
+1. [比如:还是用了 Inter / 系统字体]
+2. [比如:版式很常规,没有视觉锚点]
+3. [比如:配色就是紫色渐变 + 白底]
+
+期望但没出现的:
+- [比如:某个具体设计师的版式语言]
+- [比如:特定的装饰元素(grain / 异形 mask / custom cursor)]
+
+修哪里:
+- 改 prompt(我给的不够具体)/ 改 SKILL.md 加视觉锚点 / 加一份 references 风格档案</pre>
+              <button class="copy-btn" type="button" data-copy-target="feedback-template" style="margin-top:12px;">复制模板</button>
+            </div>
+          </div>
+          <div class="item">
+            <div class="label">还可以怎么用</div>
+            <div class="value">
+              · 自己有强烈视觉偏好时,不要让 frontend-design 自由选风格,先把参考图 / 设计师名 / 配色档喂给 Claude,再让 skill 落地。<br>
+              · 团队里固定一份"我们的 frontend-design 风格档案"(色板 + 字体对 + 间距尺度),让所有页面引用,避免每个页面风格漂移。<br>
+              · 学习用途:看 frontend-design 在不同 prompt 下选了什么字体 / 什么配色 / 什么版式语言,反过来扩充自己的设计词汇。
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer">由 skill-guide 解读 frontend-design 生成 · 非自我解读样例 — 展示对 Anthropic 官方指导型 skill 的报告形态</p>
+  </main>
+  <script>
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      const area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      document.body.removeChild(area);
+      return Promise.resolve();
+    }
+
+    document.querySelectorAll(".copy-btn").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const target = document.getElementById(button.dataset.copyTarget);
+        if (!target) return;
+        const originalText = button.textContent;
+        try {
+          await copyText(target.textContent.trim());
+          button.textContent = "已复制";
+          button.classList.add("is-copied");
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.classList.remove("is-copied");
+          }, 1400);
+        } catch (error) {
+          button.textContent = "复制失败";
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 1400);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

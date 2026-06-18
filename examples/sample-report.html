@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>skill-guide 使用说明书</title>
+  <style>
+    :root {
+      --ink: #202124;
+      --body: #34363a;
+      --muted: #74777d;
+      --line: #eceff2;
+      --dash: #d7dbe0;
+      --panel: #fbfbfc;
+      --accent: #ff4d2e;
+      --ok: #0f8a4b;
+      --warn: #e5484d;
+      --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      --mono: "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #fff;
+      color: var(--body);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.76;
+      letter-spacing: 0;
+    }
+
+    .page {
+      width: min(980px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 58px 0 84px;
+    }
+
+    .masthead {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 32px;
+      padding-bottom: 50px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 64px;
+    }
+
+    .title-wrap {
+      position: relative;
+      padding-left: 13px;
+    }
+
+    .title-wrap::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 4px;
+      height: 25px;
+      background: var(--accent);
+      border-radius: 999px;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 30px;
+      line-height: 1.2;
+      font-weight: 760;
+    }
+
+    .subtitle {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .brand {
+      margin-top: 8px;
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 720;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 14px;
+      margin-right: 8px;
+    }
+
+    section { margin-top: 64px; }
+
+    h2 {
+      margin: 0 0 28px;
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.28;
+      font-weight: 760;
+    }
+
+    .box {
+      border: 1px dashed var(--dash);
+      border-radius: 4px;
+      padding: 30px 34px;
+      background: var(--panel);
+    }
+
+    .stack { display: grid; gap: 0; }
+
+    .item {
+      padding: 0 0 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .item + .item { padding-top: 24px; }
+    .item:last-child { padding-bottom: 0; border-bottom: 0; }
+
+    .label {
+      margin-bottom: 10px;
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 620;
+    }
+
+    .value { color: var(--body); font-size: 16px; }
+
+    .ok { color: var(--ok); font-weight: 700; }
+    .hot { color: var(--accent); font-weight: 700; }
+    .warn { color: var(--warn); font-weight: 700; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      margin-left: 8px;
+      padding: 0 8px;
+      border: 1px solid rgba(15, 138, 75, .28);
+      border-radius: 999px;
+      color: var(--ok);
+      background: rgba(15, 138, 75, .06);
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 650;
+      vertical-align: 2px;
+    }
+
+    .badge.need {
+      border-color: rgba(229, 72, 77, .26);
+      color: var(--warn);
+      background: rgba(229, 72, 77, .06);
+    }
+
+    .badge.unknown {
+      border-color: rgba(116, 119, 125, .3);
+      color: var(--muted);
+      background: rgba(116, 119, 125, .06);
+    }
+
+    .judge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border: 1px solid #dfe3e7;
+      border-right: 0;
+      border-bottom: 0;
+      background: #fff;
+    }
+
+    .judge-grid > * {
+      min-height: 104px;
+      padding: 18px 20px;
+      border-right: 1px solid #dfe3e7;
+      border-bottom: 1px solid #dfe3e7;
+      background: #fff;
+    }
+
+    .judge-value {
+      margin-top: 8px;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.45;
+      font-weight: 720;
+    }
+
+    .judge-note {
+      margin-top: 8px;
+      color: var(--body);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .content-grid { display: grid; gap: 20px; }
+
+    .relation-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin: 14px 0 18px;
+    }
+
+    .relation-step {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 14px;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.35;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .prompt-card {
+      border: 1px dashed var(--dash);
+      border-radius: 4px;
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .prompt-card + .prompt-card { margin-top: 22px; }
+
+    .prompt-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .prompt-title {
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .prep-body {
+      padding: 30px 34px;
+      background: var(--panel);
+    }
+
+    .copy-btn {
+      flex: 0 0 auto;
+      min-height: 34px;
+      padding: 0 14px;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .copy-btn.is-copied {
+      border-color: rgba(15, 138, 75, .28);
+      color: var(--ok);
+      background: rgba(15, 138, 75, .06);
+    }
+
+    pre {
+      margin: 0;
+      padding: 22px 26px;
+      color: var(--ink);
+      background: #fff;
+      font-family: var(--mono);
+      font-size: 15px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid #dfe3e7;
+      padding: 13px 14px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      width: 50%;
+      color: var(--ink);
+      background: #f6f7f8;
+      font-weight: 700;
+    }
+
+    td { background: #fff; }
+
+    .footer {
+      margin-top: 72px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 28px, 980px);
+        padding-top: 34px;
+      }
+      .masthead, .judge-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+      .masthead { gap: 18px; margin-bottom: 42px; }
+      section { margin-top: 42px; }
+      .box { padding: 22px 18px; }
+      h1 { font-size: 25px; }
+      h2 { font-size: 21px; }
+      table { display: block; overflow-x: auto; white-space: nowrap; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <div class="title-wrap">
+        <h1>skill-guide 使用说明书</h1>
+        <p class="subtitle">把陌生 skill 解读成自包含 HTML 说明书的纯指导型 skill — 自己解读自己</p>
+      </div>
+      <div class="brand"><span class="brand-mark">▣</span>skill-guide</div>
+    </header>
+
+    <section>
+      <h2>1. 一句话结论</h2>
+      <div class="box">
+        <div class="stack">
+          <div class="item">
+            <div class="label">结论</div>
+            <div class="value">已安装、可直接试用。把任意 skill 目录路径丢给它,会输出一份结构化 HTML 说明书 + 聊天摘要。<span class="ok">解读阶段只读、零破坏</span>。</div>
+          </div>
+          <div class="item">
+            <div class="label">当前判断</div>
+            <div class="value"><span class="ok">可以使用</span>。SKILL.md 工作流写得极细,模板自包含、不依赖 CDN,触发语义覆盖了"这是什么 / 怎么用 / 完整度 / 搭配 / 修复 / 安装"等典型问法。</div>
+          </div>
+          <div class="item">
+            <div class="label">风险提示</div>
+            <div class="value"><span class="warn">输出一致性依赖模型自律,无 schema 校验</span>。SKILL.md 用了大量"必须 / 不要"约束,但同一个 skill 跑两次,标色策略和文件关系块的具体形态仍可能略有差异,对外交付前要人工把关。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. 快速判断</h2>
+      <div class="judge-grid">
+        <div>
+          <div class="label">完整度</div>
+          <div class="judge-value"><span class="hot">88 / 100</span></div>
+          <div class="judge-note">触发、流程、约束、模板、修复策略一应俱全。仅有缺渲染校验和 examples 单一两个非阻塞缺口。</div>
+        </div>
+        <div>
+          <div class="label">推荐动作</div>
+          <div class="judge-value"><span class="ok">直接试用</span></div>
+          <div class="judge-note">先丢一个真实 skill 目录给它跑一次。看看 HTML 报告的"快速判断"是否标色到位、文件关系块是否生成。</div>
+        </div>
+        <div>
+          <div class="label">最大风险</div>
+          <div class="judge-value"><span class="warn">输出风格依赖 LLM 自律</span></div>
+          <div class="judge-note">没有 schema 校验、没有渲染验证脚本。SKILL.md 用大量"必须 / 不要"约束,但生成结果一致性仍取决于模型。</div>
+        </div>
+        <div>
+          <div class="label">直接使用风险</div>
+          <div class="judge-value"><span class="ok">低</span></div>
+          <div class="judge-note">解读阶段只读,只生成单个 HTML 文件到当前工作区,不动原 skill,不调用付费 API,不需要登录态。</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. 直接试用</h2>
+      <div class="prompt-card">
+        <div class="prompt-head">
+          <div class="prompt-title">第一次试用 prompt</div>
+          <button class="copy-btn" type="button" data-copy-target="trial-prompt">复制</button>
+        </div>
+        <pre id="trial-prompt">用 skill-guide 解读这个 skill,生成 HTML 说明书:
+
+/Users/liuyun.1235/AI/codex/开放讨论/某个-skill
+
+要求:
+- 给完整度评分和推荐动作
+- 列出搭配建议(标明已有 / 需安装)
+- 给一段第一次试用的 prompt
+- HTML 报告保存在当前工作区,聊天里只给摘要和路径</pre>
+      </div>
+      <div class="prompt-card">
+        <div class="prompt-head">
+          <div>
+            <div class="prompt-title">高阶用法</div>
+            <div class="value">不用一开始就准备,想让结果更稳时再补充</div>
+          </div>
+        </div>
+        <div class="prep-body">
+          <div class="stack">
+            <div class="item">
+              <div class="label">Pro 版 — 让结果更准</div>
+              <div class="value">补一句:"这个 skill 我打算搭配 <strong>frontend-design</strong> 使用",或"这是给设计师看的,模板要克制"。skill-guide 会把目标受众和搭配判断都写进报告。</div>
+            </div>
+            <div class="item">
+              <div class="label">Plus 版 — 复杂场景</div>
+              <div class="value">
+                · <strong>多 skill 仓库</strong>:丢仓库根目录,先要"清单 + 工作流地图 + 推荐深读 1-3 个",再单独再来一轮深读。<br>
+                · <strong>失败案例对照</strong>:补一个你之前手写的说明 + 当时的痛点,让 skill-guide 知道你想避免哪类输出。<br>
+                · <strong>视觉升级</strong>:加一句"模板参考 image2 / 视觉母版",但要先给视觉方向图,不要让它把图片当背景。<br>
+                · <strong>自定义模板</strong>:把 <code>assets/report-template.html</code> 复制改造后,告诉 skill-guide 用你的模板,占位符按 SKILL.md 列表对齐。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. 这个 skill 是什么</h2>
+      <div class="content-grid">
+        <div class="box">
+          <div class="label">类型 — 单 skill(指导型)</div>
+          <div class="value">目录顶层有 <code>SKILL.md</code>,可直接安装。<strong>没有可执行脚本</strong>,所有"产出能力"靠 LLM 按 SKILL.md 的约束生成 HTML — 这种 skill 没脚本一样可以是高完整度的。</div>
+        </div>
+        <div class="box">
+          <div class="label">包含什么(3 个文件)</div>
+          <div class="relation-flow">
+            <div class="relation-step">SKILL.md<br><span style="font-weight:500;font-size:13px;color:var(--muted)">主流程 + 全部约束</span></div>
+            <div class="relation-step">assets/report-template.html<br><span style="font-weight:500;font-size:13px;color:var(--muted)">最终交付物模板</span></div>
+            <div class="relation-step">agents/openai.yaml<br><span style="font-weight:500;font-size:13px;color:var(--muted)">Codex/OpenAI 端 UI 元数据</span></div>
+          </div>
+          <div class="value"><strong>怎么配合:</strong>SKILL.md 是入口,定义了"读什么 → 评什么 → 输出什么"的全流程,并列出 19 个占位符规范;<code>report-template.html</code> 是 SKILL.md 引导生成的最终容器,自带 CSS、复制按钮 JS、移动端响应式;<code>openai.yaml</code> 只在 Codex/OpenAI 端用来渲染卡片(brand_color、display_name),Claude Code 端不读它,但保留它对跨平台分发无害。</div>
+        </div>
+        <div class="box">
+          <div class="label">不负责什么</div>
+          <div class="value">
+            · 不安装 skill — 那是手动 <code>ln -s</code> 或包管理器的事。<br>
+            · 不修改原 skill — 解读阶段强制只读,修复要再次确认。<br>
+            · 不验证 skill 真的能跑 — 它评的是"看起来完整度",真正的功能验证要靠 <code>verify</code> 这类 skill 或人工试用。<br>
+            · 不深读多 skill 仓库每一个 — 默认只做包级解读 + 推荐 1-3 个深读对象。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>5. 搭配使用建议</h2>
+      <div class="content-grid">
+        <div class="box">
+          <div class="label">单独用 — 够用</div>
+          <div class="value">skill-guide 自己就能闭环:输入路径 → 输出 HTML 报告 + 聊天摘要。它的核心产物是判断和说明书,不依赖外部执行能力。</div>
+        </div>
+        <div class="box">
+          <div class="label">最佳搭配(后置)</div>
+          <div class="value">
+            · <strong>frontend-design</strong> <span class="badge">已有</span> — 当报告需要更高视觉规格(汇报、对外交付),让 frontend-design 在 skill-guide 输出后做 HTML/CSS 升级。<br>
+            · <strong>verify</strong> <span class="badge">已有</span> — skill-guide 给出"试用 prompt"后,用 verify 真的跑起来确认行为,而不是只看报告判断。
+          </div>
+        </div>
+        <div class="box">
+          <div class="label">可选搭配</div>
+          <div class="value">
+            · <strong>simplify / code-review</strong> <span class="badge">已有</span> — 如果用户从"解读"进入"修复副本"阶段,用这两个清理副本里的代码。<br>
+            · <strong>relay-to-design-md</strong> <span class="badge">已有</span> — 反向场景:从 Relay 设计稿生成 design.md,再用 skill-guide 把它打包成 skill 的产出说明。<br>
+            · <strong>deep-research</strong> <span class="badge">已有</span> — 当 skill 涉及陌生领域(某个行业的 PPT、某种数据格式),先做深度调研再让 skill-guide 解读会更准。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>6. 什么时候适合用</h2>
+      <div class="content-grid">
+        <div class="box">
+          <div class="label">最适合</div>
+          <div class="value">拿到一个陌生的 skill / skill 包 / 多 skill 仓库,要快速判断"能不能用、值不值得安装、配多少时间深入"。也适合自己写完 skill 想生成对外说明书时。</div>
+        </div>
+        <div class="box">
+          <div class="label">什么时候用</div>
+          <div class="value">
+            · 朋友丢来一个 GitHub skill 链接、压缩包,或一个 SKILL.md 片段。<br>
+            · 仓库里有 <code>.claude/skills/</code> 或 <code>skills/</code> 目录,要做盘点。<br>
+            · 评审 / 选型 / 沉淀资料时,需要可分享的 HTML 说明书。
+          </div>
+        </div>
+        <div class="box">
+          <div class="label">不适合</div>
+          <div class="value">
+            · 你已经熟悉这个 skill,只想快速调用 — 直接用就行,跑 skill-guide 是浪费。<br>
+            · 想验证 skill 的真实行为 — skill-guide 不跑 skill,用 verify 或人工试用。<br>
+            · 想批量修复 skill — 那是后续阶段,先解读再修。<br>
+            · 输入是普通项目而不是 skill — 它会识别成 <code>not a skill</code>,产出价值有限。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>7. 最好能产出什么</h2>
+      <table>
+        <thead>
+          <tr><th>用户提供的资料示例</th><th>形成的对应结果示例</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>一个单 skill 目录路径(SKILL.md + assets/)</td>
+            <td>完整 HTML 说明书,9 节齐全:结论、4 格快速判断、试用 prompt、文件关系图、搭配建议、边界、IO 表、风险、反馈单</td>
+          </tr>
+          <tr>
+            <td>一个多 skill 仓库根目录</td>
+            <td>包级 HTML:仓库总用途 + skill 清单表 + 工作流地图 + 推荐深读 1-3 个 skill 名单</td>
+          </tr>
+          <tr>
+            <td>一个 SKILL.md 片段(没 references / scripts)</td>
+            <td>识别为指导型 skill,完整度评分时不扣"缺脚本",而看触发、边界、流程是否清楚</td>
+          </tr>
+          <tr>
+            <td>一个普通项目目录(无 SKILL.md)</td>
+            <td>识别为 <code>not a skill</code>,说明为什么不是 skill,以及能否改造成 skill 的最小路径</td>
+          </tr>
+          <tr>
+            <td>一个 PPTX / DOCX 生成类 skill</td>
+            <td>报告里风险栏会强制提示"建议副本、预览、缩略图验证";搭配栏会推视觉、写作、图表能力</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2"><strong>真实输出位置:</strong>HTML 文件保存在当前工作区(<code>cwd</code>),聊天回复给路径 + 30-80 字摘要;不写 stdout 长报告。<strong>真实输入接受:</strong>本地目录、SKILL.md 文件、压缩包、GitHub URL(需先下载到本地)。</td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+
+    <section>
+      <h2>8. 完整度与风险</h2>
+      <div class="content-grid">
+        <div class="box">
+          <div class="label">完整度 <span class="hot">88 / 100</span> — 接近可生产使用</div>
+          <div class="value">SKILL.md 把"读什么 / 评什么 / 输出什么 / 不做什么 / 修复阶段怎么做"都写清楚了。频繁出现的"必须 / 不要 / 默认"让 LLM 自由发挥的空间被压到合理范围。</div>
+        </div>
+        <div class="box">
+          <div class="label">风险 1 — 缺渲染校验 <span class="warn">一致性差异</span></div>
+          <div class="value">
+            <strong>用户会看到:</strong>没有 schema 或 HTML 校验脚本。同一个 skill 解读两次,占位符是否标色、文件关系块是横排还是堆叠,可能因模型采样而异。<br>
+            <strong>影响:</strong>对外交付场景下,第一稿和第二稿可能不完全一致,需要人工把关。<br>
+            <strong>怎么处理:</strong>关键交付物生成后用浏览器实际打开看一遍。后续可以加一个最小校验脚本,验证 9 个章节都在、`judge-grid` 有 4 格、关系块至少 3 个 step。修复咨询 prompt:<br>
+            <em>"在 assets/ 里加一个 validate-report.mjs,用 cheerio / jsdom 检查 sample-report.html 是否包含 9 个 section 标题、judge-grid 至少 4 个 .judge-value、relation-flow 至少 3 个 .relation-step。"</em>
+          </div>
+        </div>
+        <div class="box">
+          <div class="label">风险 2 — 示例单一 <span class="warn">引导缺口</span></div>
+          <div class="value">
+            <strong>用户会看到:</strong>`examples/` 目前只有这份"自我解读"。多 skill 仓库的清单表 + 工作流地图、`not a skill` 项目的产物、PPTX 这类高风险 skill 的副本提示,都没有可参考的实物样本。<br>
+            <strong>影响:</strong>第一次用的人不知道这些场景的产物长什么样,可能误以为 skill-guide 不支持。<br>
+            <strong>怎么处理:</strong>用 skill-guide 跑一遍 frontend-design / pptx 这类典型 skill,把生成的 HTML 收进 `examples/`。每多一份示例,新用户理解成本下降一截。
+          </div>
+        </div>
+        <div class="box">
+          <div class="label">风险 3 — 解读 / 修复边界靠用户表态 <span class="warn">流程依赖</span></div>
+          <div class="value">
+            <strong>用户会看到:</strong>SKILL.md 强调"解读阶段只读、不默认修复",但当用户说"顺手把它改了"这类含糊指令时,LLM 是否进入修复阶段、是否做副本,取决于 LLM 对边界的判断。<br>
+            <strong>影响:</strong>极少数情况下可能直接改原 skill 而非副本,尤其在多 skill 仓库扫描时。<br>
+            <strong>怎么处理:</strong>用户侧:要修就明说"做修复副本,不要动原 skill"。skill 侧:可以在 SKILL.md "修复策略"一节加一句"任何修改前必须先确认副本路径并复述给用户"。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>9. 试用失败后怎么找我修</h2>
+      <div class="box">
+        <div class="stack">
+          <div class="item">
+            <div class="label">建议动作顺序</div>
+            <div class="value">
+              <strong>1. 先试用</strong> — skill 已安装为软链接(<code>~/.claude/skills/skill-guide → /Users/liuyun.1235/AI/codex/开放讨论/skill-guide</code>),触发即用,源目录改动立即生效。<br>
+              <strong>2. 反馈样例</strong> — 跑完一次后,把生成的 HTML、你期望但没出现的内容、看着不对劲的地方一起带回。<br>
+              <strong>3. 修复副本</strong> — 不直接改 <code>开放讨论/skill-guide</code>;复制一份到 <code>开放讨论/skill-guide-fix-001/</code> 改,验收后再合回。<br>
+              <strong>4. 归档</strong> — 如果决定不用,把软链接删掉(<code>rm ~/.claude/skills/skill-guide</code>),源目录保留。
+            </div>
+          </div>
+          <div class="item">
+            <div class="label">反馈模板(可复制)</div>
+            <div class="value">
+              <pre id="feedback-template" style="background:#fff;border:1px solid var(--line);font-size:14px;">我跑了 skill-guide,输入是: [skill 路径]
+生成的 HTML: [path]
+
+不对劲的地方:
+1. [比如:快速判断 4 格里"最大风险"格没标色,整段普通正文]
+2. [比如:文件关系块只用了一句箭头文字,没用 .relation-flow]
+3. [比如:产出表格写成了承诺,而不是"通常可以形成"]
+
+期望但没出现的:
+- [比如:多 skill 仓库该有的工作流地图]
+- [比如:搭配对象的"已有 / 需安装"状态标签]
+
+修哪里:
+- 改 SKILL.md 的约束 / 改 report-template.html 的占位符 / 改我下次的 prompt</pre>
+              <button class="copy-btn" type="button" data-copy-target="feedback-template" style="margin-top:12px;">复制模板</button>
+            </div>
+          </div>
+          <div class="item">
+            <div class="label">还可以怎么用</div>
+            <div class="value">
+              · 自己写 skill 时,先按 SKILL.md 的检查清单自检一遍,再让 skill-guide 反向解读,看输出是否符合预期。<br>
+              · 团队选型 skill 包时,跑一遍 skill-guide,把 HTML 报告作为评审材料。<br>
+              · 跨平台分发时,Codex 端用 <code>agents/openai.yaml</code> 的元数据,Claude 端靠 SKILL.md 的 frontmatter,模板在两端通用。
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer">由 skill-guide 自我解读生成 · 示例报告 — 展示标准产物长什么样</p>
+  </main>
+  <script>
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      const area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      document.body.removeChild(area);
+      return Promise.resolve();
+    }
+
+    document.querySelectorAll(".copy-btn").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const target = document.getElementById(button.dataset.copyTarget);
+        if (!target) return;
+        const originalText = button.textContent;
+        try {
+          await copyText(target.textContent.trim());
+          button.textContent = "已复制";
+          button.classList.add("is-copied");
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.classList.remove("is-copied");
+          }, 1400);
+        } catch (error) {
+          button.textContent = "复制失败";
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 1400);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

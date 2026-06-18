@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# 编辑器临时文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cursor/
+
+# 系统 / 备份
+Thumbs.db
+*.bak
+*.backup-*
+
+# 临时产物(不要把别人解读后的报告污染示例库)
+*.tmp
+/tmp/
+/scratch/
