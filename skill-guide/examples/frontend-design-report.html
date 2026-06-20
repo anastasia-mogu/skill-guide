@@ -14,12 +14,15 @@
       --panel: #fbfbfc;
       --accent: #ff4d2e;
       --ok: #0f8a4b;
-      --warn: #e5484d;
+      --warn: #ff4d2e;
       --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
       --mono: "SF Mono", Menlo, Consolas, monospace;
     }
 
     * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+    section { scroll-margin-top: 20px; }
 
     body {
       margin: 0;
@@ -93,6 +96,46 @@
       margin-right: 8px;
     }
 
+    .toc {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+      margin: -28px 0 8px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 12px 14px;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: var(--panel);
+      color: var(--body);
+      font-size: 14px;
+      line-height: 1.4;
+      text-decoration: none;
+      transition: border-color .15s, color .15s;
+    }
+
+    .toc a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .toc a .toc-num {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      margin-right: 8px;
+    }
+
+    .toc a .toc-tag {
+      display: inline-block;
+      margin-left: 6px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
     section { margin-top: 64px; }
 
     h2 {
@@ -137,7 +180,7 @@
       display: inline-flex;
       align-items: center;
       min-height: 22px;
-      margin-left: 8px;
+      margin: 0 8px 0 0;
       padding: 0 8px;
       border: 1px solid rgba(15, 138, 75, .28);
       border-radius: 999px;
@@ -155,10 +198,23 @@
       background: rgba(229, 72, 77, .06);
     }
 
+    .badge.optional,
     .badge.unknown {
       border-color: rgba(116, 119, 125, .3);
       color: var(--muted);
       background: rgba(116, 119, 125, .06);
+    }
+
+    .item-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .item-head .label {
+      margin-bottom: 0;
     }
 
     .judge-grid {
@@ -193,12 +249,14 @@
       line-height: 1.65;
     }
 
+    .judge-grid > .span-all { grid-column: 1 / -1; }
+
     .content-grid { display: grid; gap: 20px; }
 
     .relation-flow {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
+      grid-template-columns: 1fr;
+      gap: 10px;
       margin: 14px 0 18px;
     }
 
@@ -206,7 +264,8 @@
       min-height: 54px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      gap: 12px;
       padding: 12px 14px;
       border: 1px solid #dfe3e7;
       border-radius: 4px;
@@ -215,7 +274,58 @@
       font-size: 15px;
       line-height: 1.35;
       font-weight: 700;
-      text-align: center;
+      text-align: left;
+    }
+
+    .workflow-note { margin-top: 18px; }
+
+    .workflow-title {
+      margin: 18px 0 10px;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .workflow-side {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .workflow-side .relation-step {
+      min-height: 46px;
+      border-style: dashed;
+      background: #fbfbfc;
+    }
+
+    .package-map {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 12px 0 20px;
+    }
+
+    .package-cell {
+      min-height: 72px;
+      padding: 13px 14px;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    .package-cell code {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .package-cell span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 500;
     }
 
     .prompt-card {
@@ -226,6 +336,10 @@
     }
 
     .prompt-card + .prompt-card { margin-top: 22px; }
+
+    .followup-box {
+      margin-top: 22px;
+    }
 
     .prompt-head {
       display: flex;
@@ -244,8 +358,39 @@
     }
 
     .prep-body {
-      padding: 30px 34px;
+      padding: 34px 36px;
       background: var(--panel);
+    }
+
+    .prep-body .item {
+      padding-bottom: 34px;
+    }
+
+    .prep-body .item + .item {
+      padding-top: 34px;
+    }
+
+    .prep-body .value {
+      line-height: 1.82;
+    }
+
+    .prep-body .copy-block {
+      margin-top: 22px;
+      position: relative;
+    }
+
+    .prep-body .copy-block pre {
+      margin-top: 0;
+      padding-top: 22px;
+      padding-bottom: 72px;
+    }
+
+    .copy-block .copy-btn {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      z-index: 1;
+      background: #fff;
     }
 
     .copy-btn {
@@ -305,6 +450,14 @@
 
     td { background: #fff; }
 
+    td .diff {
+      background: rgba(255, 77, 46, .1);
+      border-radius: 3px;
+      padding: 1px 4px;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
     .footer {
       margin-top: 72px;
       padding-top: 20px;
@@ -313,7 +466,7 @@
       font-size: 13px;
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 560px) {
       .page {
         width: min(100% - 28px, 980px);
         padding-top: 34px;
@@ -327,6 +480,9 @@
       .box { padding: 22px 18px; }
       h1 { font-size: 25px; }
       h2 { font-size: 21px; }
+      .item-head { align-items: flex-start; flex-direction: column; }
+      .prep-body { padding: 24px 18px; }
+      .package-map { grid-template-columns: 1fr; }
       table { display: block; overflow-x: auto; white-space: nowrap; }
     }
   </style>
@@ -341,67 +497,80 @@
       <div class="brand"><span class="brand-mark">▣</span>skill-guide</div>
     </header>
 
-    <section>
+    <nav class="toc" aria-label="目录">
+      <a href="#sec-1"><span class="toc-num">01</span>一句话结论</a>
+      <a href="#sec-2"><span class="toc-num">02</span>快速判断<span class="toc-tag">含 token 预估</span></a>
+      <a href="#sec-3"><span class="toc-num">03</span>直接开始用</a>
+      <a href="#sec-4"><span class="toc-num">04</span>和什么技能最搭配</a>
+      <a href="#sec-5"><span class="toc-num">05</span>产出物对照</a>
+      <a href="#sec-6"><span class="toc-num">06</span>完整度与改善点</a>
+      <a href="#sec-7"><span class="toc-num">07</span>适合谁用，不能做什么</a>
+    </nav>
+
+    <section id="sec-1">
       <h2>1. 一句话结论</h2>
       <div class="box">
         <div class="stack">
           <div class="item">
             <div class="label">结论</div>
-            <div class="value">已安装、可直接试用。让 Claude 写网页 / 组件 / 海报 / dashboard 时,产出会更有"设计意图",远离 Inter + 紫色渐变这种 AI 套娃美学。<span class="ok">解读阶段完全只读,零破坏。</span></div>
+            <div class="value"><span class="ok">frontend-design 是前端视觉设计导演</span>。它让 Claude 做网页、组件、海报、仪表盘时先定主题、色板、字体、版式和记忆点,再写代码,解决前端产物容易模板化、没有设计观点的问题。</div>
           </div>
           <div class="item">
             <div class="label">当前判断</div>
-            <div class="value"><span class="ok">可以使用</span>。SKILL.md 只有 42 行,但触发语义清晰、约束明确(列出禁用字体 / 禁用配色 / 必须做的事),是 Anthropic 官方 skill 的"低字数高密度"风格。</div>
+            <div class="value"><span class="ok">可以使用</span>。<code>SKILL.md</code> 55 行,但信息密度很高:它要求先做设计计划,再审查是否像默认模板,最后按计划写代码,是官方技能里典型的短文档高约束写法。</div>
           </div>
           <div class="item">
             <div class="label">风险提示</div>
-            <div class="value"><span class="warn">效果强度上限取决于 prompt</span>。一句"做个 landing page"和"做个 brutalist editorial 风格、1950s magazine 排版的 landing page",产出差距巨大。skill 自己不会替你做风格选择。</div>
+            <div class="value"><span class="warn">效果稳定性取决于视觉锚点</span>。只说"做个页面"也能触发它自选方向,但如果你补充参考品牌、受众、文案和现有页面,产出会明显更稳。</div>
           </div>
         </div>
       </div>
     </section>
 
-    <section>
+    <section id="sec-2">
       <h2>2. 快速判断</h2>
       <div class="judge-grid">
         <div>
           <div class="label">完整度</div>
-          <div class="judge-value"><span class="hot">85 / 100</span></div>
-          <div class="judge-note">触发覆盖广(组件 / 页面 / dashboard / 海报)、禁用清单具体、原则简洁。扣分在没有正反例对照、没有 examples/、没有可复制的风格档案。</div>
+          <div class="judge-value"><span class="hot">88 / 100</span></div>
         </div>
         <div>
           <div class="label">推荐动作</div>
-          <div class="judge-value"><span class="ok">直接试用</span></div>
-          <div class="judge-note">写一个真实需求(landing page / dashboard / 海报)给它,先体感一下"AI 通用美学"和"frontend-design 加持"的差异。</div>
+          <div class="judge-value"><span class="ok">直接开始用</span></div>
         </div>
         <div>
           <div class="label">最大风险</div>
-          <div class="judge-value"><span class="warn">没有视觉锚点</span></div>
-          <div class="judge-note">SKILL.md 列了 11 种"风格关键词"(brutalist / 编辑型 / art deco……),但没附参考图、没附配色档、没附字体推荐。LLM 对每种风格的理解可能漂移。</div>
+          <div class="judge-value"><span class="warn">缺少示例产物</span></div>
+          <div class="judge-note">规则很完整,但没有自带前后对照、截图或可复制风格档案。新用户不容易预判启用后会变成什么样。</div>
         </div>
         <div>
           <div class="label">直接使用风险</div>
           <div class="judge-value"><span class="ok">极低</span></div>
-          <div class="judge-note">纯指导型,不动文件、不调 API、不需要登录,只影响 Claude 写代码时的风格偏向。</div>
+          <div class="judge-note">它只影响 Claude 写前端时的风格偏向,不动文件、不调用接口、不需要登录。</div>
+        </div>
+        <div class="span-all">
+          <div class="label">token 消耗预估</div>
+          <div class="judge-value"><span class="ok">轻 ~3-5k</span><span class="judge-note" style="display:inline;margin-left:10px">粗略示意</span></div>
+          <div class="judge-note">纯指导型、SKILL.md 55 行、无脚本无 examples,属最轻档。影响因素:是否深读 references、是否多 skill 仓库、是否生成 HTML。省 token:先不深读引用文件、按需再补;多 skill 仓库先做包级解读,不一次性深读整库。</div>
         </div>
       </div>
     </section>
 
-    <section>
-      <h2>3. 直接试用</h2>
+    <section id="sec-3">
+      <h2>3. 直接开始用</h2>
       <div class="prompt-card">
         <div class="prompt-head">
-          <div class="prompt-title">第一次试用 prompt(基础)</div>
+          <div class="prompt-title">第一次试用提示词</div>
           <button class="copy-btn" type="button" data-copy-target="trial-prompt">复制</button>
         </div>
-        <pre id="trial-prompt">用 frontend-design 给我做一个 landing page,主题:一个独立咖啡品牌叫 "MONO".
+        <pre id="trial-prompt">用 frontend-design 给我做一个品牌首页,主题:一个独立咖啡品牌叫 "MONO".
 
 要求:
-- 选一个"非通用"的设计方向(brutalist / editorial / art deco / 任何不常见的)
-- 字体不要 Inter / Roboto / 系统字体
-- 配色不要紫色渐变 + 白底
-- 一定要有一个让人记住的视觉锚点(不规则版式 / grain 噪点 / 异形 mask 等)
-- 输出可直接打开的 HTML/CSS,不依赖远程 CDN</pre>
+- 先给一份简短设计计划:色板、字体角色、版式概念、唯一记忆点
+- 构建前先自查一次:哪些地方可能像默认模板,需要怎么改
+- 首页必须有一个能一眼记住的视觉锚点
+- 文案要从顾客视角写,不要像占位说明
+- 输出可直接打开的单文件 HTML/CSS,不依赖远程 CDN</pre>
       </div>
       <div class="prompt-card">
         <div class="prompt-head">
@@ -413,230 +582,206 @@
         <div class="prep-body">
           <div class="stack">
             <div class="item">
-              <div class="label">Pro 版 — 让风格落地更准</div>
-              <div class="value">补一句风格锚定:"参考 1970s Swiss design / Wim Crouwel 字体网格"或"参考日本杂志 IDEA 的版式语言"。skill 知道你想要什么具体的设计语境,产出会显著锐化。</div>
+              <div class="item-head">
+                <div class="label">Pro 版 — 让风格落地更准</div>
+              </div>
+              <div class="value">补一句明确的风格锚定,再要求它把色板、字体和版式写成一个小型设计系统。这样不是只追求好看,而是让后续页面能沿着同一个方向继续做。</div>
+              <div class="copy-block">
+                <button class="copy-btn" type="button" data-copy-target="pro-prompt">复制 Pro 版</button>
+                <pre id="pro-prompt">请在刚才的基础要求上继续强化视觉方向:
+
+- 参考 1970 年代瑞士网格设计,强调严谨排版、强对比标题和清晰留白
+- 先写出 4-6 个色值、2 组以上字体角色、版式概念和唯一记忆点
+- 构建前自查:如果这套方案换成任何咖啡品牌都能用,请重改
+- 字体、配色、间距、按钮和卡片状态都围绕这个方向统一
+- 保留响应式、键盘焦点和减少动态效果设置</pre>
+              </div>
             </div>
             <div class="item">
-              <div class="label">Plus 版 — 复杂场景</div>
+              <div class="item-head">
+                <div class="label">Plus 版 — 复杂场景</div>
+              </div>
               <div class="value">
-                · <strong>多页面体系</strong>:先让 frontend-design 输出一份"风格档案"(色板 / 字体对 / 间距尺度 / 装饰元素清单),后续每个页面都让 Claude 引用这份档案,避免风格漂移。<br>
-                · <strong>设计稿对照</strong>:你已有 Figma / Relay / 截图,把图丢给 Claude 一起 prompt,frontend-design 会偏向"匹配你的视觉",而不是它自己的偏好。<br>
-                · <strong>React / Vue 工程</strong>:加一句"用 Motion 库做入场动画,只在 hero 区做一次 staggered reveal",避免 micro-interaction 过载。<br>
-                · <strong>Dark mode 切换</strong>:明确说"做暗色主题为主,可选亮色",否则它会默认生成亮色。
+                · <strong>多页面体系</strong>:先让 frontend-design 输出一份风格档案,包括色板、字体角色、间距尺度、签名元素和组件规则。<br>
+                · <strong>设计稿对照</strong>:如果已有设计稿或截图,把图一起给 Claude,让它匹配你的视觉,而不是自由发挥。<br>
+                · <strong>工程页面</strong>:明确动画强度、组件状态和 CSS 命名,避免动效过载或样式互相覆盖。<br>
+                · <strong>文案要求</strong>:把按钮、空状态、错误提示一起说清楚,因为这个 skill 会把文案当成设计材料。
+              </div>
+              <div class="copy-block">
+                <button class="copy-btn" type="button" data-copy-target="plus-prompt">复制 Plus 版</button>
+                <pre id="plus-prompt">请先为这个项目生成一份风格档案,再按档案继续做页面:
+
+风格档案需要包含:
+- 色板
+- 字体角色
+- 间距尺度
+- 签名视觉元素
+- 按钮、卡片、导航、表单的基础状态
+- 动效原则
+- 文案语气和控件命名规则
+
+后续所有页面都必须引用这份风格档案。如果我提供了设计稿、截图或现有页面代码,请优先对齐这些材料。动效只服务关键区域,不要全页过度动画。</pre>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-
-    <section>
-      <h2>4. 这个 skill 是什么</h2>
-      <div class="content-grid">
-        <div class="box">
-          <div class="label">类型 — 单 skill(纯指导型,Anthropic 官方)</div>
-          <div class="value">目录顶层只有 <code>SKILL.md</code> 和 <code>LICENSE.txt</code>,<strong>无脚本、无 references、无 examples、无 agents/openai.yaml</strong>。这是典型的"低字数高密度"指导型 skill — 整份说明 42 行,靠精确的禁用 / 必须项来约束 LLM 的风格输出。</div>
-        </div>
-        <div class="box">
-          <div class="label">包含什么(2 个文件)</div>
-          <div class="relation-flow">
-            <div class="relation-step">SKILL.md<br><span style="font-weight:500;font-size:13px;color:var(--muted)">触发 + 全部设计原则</span></div>
-            <div class="relation-step">LICENSE.txt<br><span style="font-weight:500;font-size:13px;color:var(--muted)">Apache 2.0 授权</span></div>
-            <div class="relation-step">(无 examples / scripts)<br><span style="font-weight:500;font-size:13px;color:var(--muted)">所有效果靠 LLM 实时产出</span></div>
-          </div>
-          <div class="value"><strong>怎么配合:</strong>SKILL.md 单文件承载全部能力,分四节:Design Thinking(让 Claude 先选风格再写)、Frontend Aesthetics Guidelines(字体 / 配色 / 动效 / 版式 / 背景五大维度)、禁用清单(Inter / Roboto / Arial / 紫色渐变 / 系统字体 / 通用版式)、复杂度匹配原则。<code>LICENSE.txt</code> 只是合规文件,不影响使用。</div>
-        </div>
-        <div class="box">
-          <div class="label">不负责什么</div>
-          <div class="value">
-            · <strong>不替你选风格</strong> — 你必须给主题或风格关键词,否则它只能默认猜。<br>
-            · <strong>不生成图片资源</strong> — 配图 / 插画 / 图标要另外搭配。<br>
-            · <strong>不验证渲染效果</strong> — 输出的 HTML 是否好看,要自己打开看,或搭配浏览器预览能力。<br>
-            · <strong>不做内容文案</strong> — 它管的是视觉,文案需要你自己给或搭配写作型 skill。<br>
-            · <strong>不保证可访问性</strong> — Maximalist 风格往往 a11y 较差,要主动要求"WCAG AA / 可键盘导航"。
-          </div>
+      <div class="box followup-box">
+        <div class="label">失败了怎么反馈</div>
+        <div class="value">
+          把原始提示词、生成的 HTML、截图、你不满意的视觉点一起带回。最有用的反馈是:"哪里像默认生成"、"想更接近哪种参考"、"色板/字体/动效/文案哪里偏了"。
         </div>
       </div>
     </section>
 
-    <section>
-      <h2>5. 搭配使用建议</h2>
+    <section id="sec-4">
+      <h2>4. 和什么技能最搭配</h2>
       <div class="content-grid">
         <div class="box">
           <div class="label">单独用 — 看场景</div>
-          <div class="value">做单页 demo / 海报 / 一次性页面 — 单独够用。做完整产品 / 多页站点 / 长期维护的设计系统 — 不够,需要前置和后置搭配。</div>
+          <div class="value">做单页展示、海报、一次性页面时,单独够用。做完整产品、多页面站点、长期维护的设计系统时,需要前置素材和后置验证。</div>
         </div>
         <div class="box">
           <div class="label">最佳搭配(前置)</div>
           <div class="value">
-            · <strong>relay-to-design-md</strong> <span class="badge">已有</span> — 设计师已有 Relay / Figma 稿,先生成 design.md,再让 frontend-design 按 design.md 落地代码,避免它自由发挥跑偏。<br>
-            · <strong>deep-research</strong> <span class="badge">已有</span> — 做陌生行业 / 陌生品牌时,先调研视觉参考,再让 frontend-design 锚定到具体的设计语言。
+            · <span class="badge">已有</span><strong>relay-to-design-md</strong> — 设计师已有 Relay 或 Figma 稿时,先生成 <code>design.md</code>,再让 frontend-design 按设计说明落地代码。<br>
+            · <span class="badge">已有</span><strong>deep-research</strong> — 做陌生行业或陌生品牌时,先调研视觉参考,再让 frontend-design 锚定到具体设计语言。
           </div>
         </div>
         <div class="box">
           <div class="label">最佳搭配(后置)</div>
           <div class="value">
-            · <strong>verify</strong> <span class="badge">已有</span> — 生成 HTML 后用 verify 真的打开页面,看渲染、看响应式、看动效是否过载。<br>
-            · <strong>code-review / simplify</strong> <span class="badge">已有</span> — Maximalist 输出的 CSS 容易冗余,事后清理一遍。
+            · <span class="badge">已有</span><strong>verify</strong> — 生成 HTML 后实际打开页面,看渲染、响应式、键盘焦点和动效是否过载。<br>
+            · <span class="badge">已有</span><strong>code-review / simplify</strong> — 视觉增强后的 CSS 容易变长,交付前清理一遍。
           </div>
         </div>
         <div class="box">
           <div class="label">可选搭配</div>
           <div class="value">
-            · <strong>skill-guide</strong> <span class="badge">已有</span> — 做完一份成品后,反向用 skill-guide 把"我喜欢的风格选择 / 用了哪些字体 / 配色"沉淀成自己的 design profile。<br>
-            · <strong>frontend-design 自身组合</strong> — 多页面项目里,先让它生成"风格档案",后续每页都引用,自我搭配。
+            · <span class="badge">已有</span><strong>skill-guide</strong> — 做完一份成品后,反向沉淀"我喜欢的字体、配色、版式选择",方便下次复用。<br>
+            · <span class="badge optional">可选</span><strong>frontend-design 自身组合</strong> — 多页面项目里先生成风格档案,后续每页都引用。
           </div>
         </div>
       </div>
     </section>
 
-    <section>
-      <h2>6. 什么时候适合用</h2>
-      <div class="content-grid">
-        <div class="box">
-          <div class="label">最适合</div>
-          <div class="value">需要一份"看上去不像 ChatGPT 默认风格"的前端产物 — landing page、品牌官网、Notion 替代品、海报、艺术家个人站、独立产品发布页、editorial 文章页等。</div>
-        </div>
-        <div class="box">
-          <div class="label">什么时候用</div>
-          <div class="value">
-            · 给客户做提案、做对外发布的页面、做有品牌调性的产品。<br>
-            · 上一版 Claude 给的页面"看起来很 AI",想换风格。<br>
-            · 想体验一下 brutalist / editorial / art deco 这些不常见美学的实现。<br>
-            · 写 React / Vue 组件库,想要每个组件都有视觉锚点而不是"通用样式"。
-          </div>
-        </div>
-        <div class="box">
-          <div class="label">不适合</div>
-          <div class="value">
-            · 内部 admin / 工具类页面 — 这些场景要克制和功能性,frontend-design 容易过度装饰。明确要求"极简、专业、无装饰"反而更好。<br>
-            · 已有强约束的设计系统 — 公司有完整 design tokens / 组件库时,frontend-design 的风格选择会和现有系统冲突,改用 design 系统的具体规则。<br>
-            · 对可访问性 / 性能要求极高的场景 — Maximalist 输出可能 a11y 差、首屏慢,需要明确指标约束。<br>
-            · 后端 / 工具脚本 / 非视觉任务 — 完全无关。
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2>7. 最好能产出什么</h2>
+    <section id="sec-5">
+      <h2>5. 产出物对照</h2>
       <table>
         <thead>
-          <tr><th>用户提供的资料示例</th><th>形成的对应结果示例</th></tr>
+          <tr><th style="width:96px">输入投入</th><th style="width:240px">你提供什么</th><th>通常能拿到（高亮＝多给后多得的）</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>"做个 landing page,主题是独立咖啡品牌 MONO"</td>
-            <td>一份完整 HTML/CSS,有明确风格(比如 brutalist 黑白 + serif 大标题 + grain 噪点),独特字体对(显示字体 + 正文字体),自定义动效(staggered reveal),可直接打开</td>
+            <td>最少</td>
+            <td>一句页面需求,比如"做个独立咖啡品牌 MONO 的首页"</td>
+            <td>一份有明确设计计划的 HTML/CSS:会主动选择色板、字体角色、版式概念和唯一记忆点,通常比默认页面更有观点;但品牌语气、素材和真实业务细节会偏推测。</td>
           </tr>
           <tr>
-            <td>"做一个数据看板,展示销售指标,要冷峻"</td>
-            <td>暗色主题 + 等宽字体 + 不规则网格 + 冷色高对比配色;数据卡片有微动画但克制;不会出现紫色渐变和默认 chart.js 配色</td>
+            <td>补充</td>
+            <td>＋品牌关键词、参考风格、目标用户、页面内容、已有图片或文案</td>
+            <td>基础页面,并 <span class="diff">把风格锚点收窄到更具体的设计语言</span>:例如瑞士网格、杂志编辑感、冷峻工具页或某个品牌参考;字体层级、颜色、动效和文案会更贴近你的意图。</td>
           </tr>
           <tr>
-            <td>"给我做一张海报"</td>
-            <td>非常规版式(对角线 / overlap / 裁切),独特字体处理(变形 / 网格化 / 反白),装饰元素(几何 / 噪点 / 异形 mask),CSS-only 实现,可直接 print</td>
-          </tr>
-          <tr>
-            <td>"React 组件:一个文章卡片"</td>
-            <td>不止是 box-shadow + border-radius;会有 hover 时的揭示动画、独特的标签处理、有意识的字体层级,Motion 库加微交互(如果可用)</td>
-          </tr>
-          <tr>
-            <td>"美化这个已有页面"(给一段普通 HTML)</td>
-            <td>识别现有结构 → 选定一个统一风格方向 → 重写 CSS / 加装饰层 / 替换字体配色 → 给一两个标志性细节(custom cursor / scroll trigger / grain layer)</td>
+            <td>充分</td>
+            <td>＋现有页面代码、设计截图 / Figma / Relay、组件约束、失败案例、运行环境</td>
+            <td>前述全部,并 <span class="diff">更像一次可交付的视觉改造</span>:保留原结构,重写 CSS / 调整组件状态 / 补响应式和减少动态效果;还能指出哪些效果需要浏览器截图或代码检查验证。</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="2"><strong>真实输出位置:</strong>HTML/CSS 直接写到 Claude 的回复里,或写到当前工作区的 .html 文件。<strong>真实输入接受:</strong>纯文字需求、设计图片(可读)、Relay/Figma 链接(配合其他 skill)、已有 HTML 片段。</td>
+            <td colspan="3">以上为通常可形成的预期(非承诺);给得越准,结果越准。真实输出:HTML/CSS 直接写到 Claude 的回复里,或写到当前工作区的 .html 文件。真实输入:纯文字需求、设计图片(可读)、Relay/Figma 链接(配合其他 skill)、已有 HTML 片段。</td>
           </tr>
         </tfoot>
       </table>
     </section>
 
-    <section>
-      <h2>8. 完整度与风险</h2>
+    <section id="sec-6">
+      <h2>6. 完整度与改善点</h2>
       <div class="content-grid">
         <div class="box">
-          <div class="label">完整度 <span class="hot">85 / 100</span> — 可生产使用</div>
-          <div class="value">42 行 SKILL.md 写得很精,触发宽、禁用具体、原则简洁。Anthropic 官方风格,低字数高密度。扣分主要在引导素材而非核心机制。</div>
+          <div class="label">完整度 <span class="hot">88 / 100</span> — 可生产使用</div>
+          <div class="value">55 行 <code>SKILL.md</code> 写得很精,从主题定位、设计计划、自我批判、代码落地到文案语气都有要求。扣分主要在缺少样例和可复用风格档案,不是核心机制。</div>
         </div>
         <div class="box">
-          <div class="label">风险 1 — 缺少视觉锚点 <span class="warn">理解漂移</span></div>
-          <div class="value">
-            <strong>用户会看到:</strong>SKILL.md 列了 brutalist / editorial / art deco / industrial 等 11 种风格关键词,但没有任何参考图、配色档、字体清单。LLM 对"brutalist"的理解可能是 90s 极简,也可能是粗野水泥纹理。<br>
-            <strong>影响:</strong>同一句 prompt 跑两次,风格走向会有明显差异。需要靠 prompt 自己锚定参考来源。<br>
-            <strong>怎么处理:</strong>用 Pro 版 prompt 补充参考(具体设计师 / 杂志 / 网站名)。skill 侧的修复咨询 prompt:<br>
-            <em>"在 frontend-design 旁加一份 references/style-archetypes.md,每种风格关键词配一行视觉参考(具体设计师名 / 网站名 / 字体推荐 / 经典色)。"</em>
-          </div>
-        </div>
-        <div class="box">
-          <div class="label">风险 2 — 没有 examples/ 看产物 <span class="warn">引导缺口</span></div>
+          <div class="label">改善点 1 — 补示例产物 <span class="warn">新用户不易感知差异</span></div>
           <div class="value">
             <strong>用户会看到:</strong>没有示例 HTML / 截图,新用户不知道"frontend-design 启用前 vs 启用后"差距在哪。<br>
             <strong>影响:</strong>低估 skill 的价值,或对它的产物有不切实际的期待。<br>
-            <strong>怎么处理:</strong>跑一次基础 prompt 留个产物在本地;团队里建 1 份"frontend-design 风格档案"作为内部参考。
+            <strong>怎么处理:</strong>跑一次基础提示词留个产物在本地;团队里建 1 份"frontend-design 风格档案"作为内部参考。
           </div>
         </div>
         <div class="box">
-          <div class="label">风险 3 — 容易过度装饰 <span class="warn">场景错配</span></div>
+          <div class="label">改善点 2 — 补风格档案 <span class="warn">多页面容易漂移</span></div>
           <div class="value">
-            <strong>用户会看到:</strong>对 admin 页面、工具类页面、纯内容型页面,LLM 会强行加视觉锚点和动效,结果反而干扰阅读 / 操作。<br>
-            <strong>影响:</strong>给非品牌场景做工具页时,需要主动说"克制,不要装饰",否则容易过载。<br>
-            <strong>怎么处理:</strong>明确说"refined minimalist,无动效,无装饰背景,只用 1 种字体"。SKILL.md 自己也提到了"minimalism 也是一种选择",但默认会偏向 maximalist。
+            <strong>用户会看到:</strong>单页效果往往不错,但多页面连续生成时,色板、字体、动效和组件状态可能逐页变化。<br>
+            <strong>影响:</strong>做完整站点或产品时,后续页面会不像同一套系统。<br>
+            <strong>怎么处理:</strong>先用 Plus 版生成风格档案,之后每一页都引用这份档案。
           </div>
         </div>
         <div class="box">
-          <div class="label">风险 4 — 可访问性容易被忽略 <span class="warn">默认弱项</span></div>
+          <div class="label">改善点 3 — 控制装饰强度 <span class="warn">场景错配时会过载</span></div>
           <div class="value">
-            <strong>用户会看到:</strong>SKILL.md 没强调 a11y。Maximalist 设计常见对比度不够、键盘焦点缺失、动效干扰阅读。<br>
-            <strong>影响:</strong>对外发布前需要单独检查;不能直接交付给有 a11y 合规要求的客户。<br>
-            <strong>怎么处理:</strong>prompt 里加"满足 WCAG AA 对比度,可键盘导航,prefers-reduced-motion 时禁用动效"。
+            <strong>用户会看到:</strong>对内部管理页、工具页、纯内容页,模型可能把"独特记忆点"做得过强,结果干扰阅读 / 操作。<br>
+            <strong>影响:</strong>给非品牌场景做工具页时,需要主动说"克制,让结构服务信息"。<br>
+            <strong>怎么处理:</strong>明确说"安静、低动效、少装饰,把独特性花在信息结构和字体层级上"。
+          </div>
+        </div>
+        <div class="box">
+          <div class="label">改善点 4 — 验证仍要外接 <span class="warn">不能只看文字结果</span></div>
+          <div class="value">
+            <strong>用户会看到:</strong><code>SKILL.md</code> 提到响应式、键盘焦点、减少动态效果和截图自查,但它自己不执行浏览器验证。<br>
+            <strong>影响:</strong>对外交付前仍要实际打开页面,看移动端、交互状态和 CSS 是否互相覆盖。<br>
+            <strong>怎么处理:</strong>生成后接 verify 或人工预览;如果有布局错位,把截图和 HTML 一起带回修。
           </div>
         </div>
       </div>
     </section>
 
-    <section>
-      <h2>9. 试用失败后怎么找我修</h2>
-      <div class="box">
-        <div class="stack">
-          <div class="item">
-            <div class="label">建议动作顺序</div>
-            <div class="value">
-              <strong>1. 先试用</strong> — skill 已通过 cc-switch 单源 + 双端软链接安装(<code>~/.claude/skills/frontend-design</code>、<code>~/.codex/skills/frontend-design</code> 都指向 <code>~/.cc-switch/skills/frontend-design</code>),触发即用。<br>
-              <strong>2. 反馈样例</strong> — 跑一次基础 prompt + 一次 Pro 版 prompt,把两份产物 + 你期望但没出现的视觉特征一起带回。<br>
-              <strong>3. 修复副本</strong> — 不直接改 cc-switch 里的 SKILL.md;复制到 <code>~/.cc-switch/skills/frontend-design-fix-001/</code> 改,验证后再合回。<br>
-              <strong>4. 归档</strong> — 不用就删两个软链接(<code>rm ~/.claude/skills/frontend-design ~/.codex/skills/frontend-design</code>),源目录保留。
-            </div>
+    <section id="sec-7">
+      <h2>7. 适合谁用，不能做什么</h2>
+      <div class="content-grid">
+        <div class="box">
+          <div class="label">它能帮你做什么</div>
+          <div class="value">frontend-design 是给前端视觉任务用的设计导演技能。你让 Claude 做网页、组件、海报或仪表盘时,它会要求 Claude 先定义主题、受众、色板、字体、版式和唯一记忆点,再写页面结构和样式,减少模板化默认风格。</div>
+        </div>
+        <div class="box">
+          <div class="label">文件关系图</div>
+          <div class="workflow-title">包里有什么</div>
+          <div class="package-map">
+            <div class="package-cell"><code>SKILL.md</code><span>核心说明书,承载触发条件和全部前端设计规则。</span></div>
+            <div class="package-cell"><code>LICENSE.txt</code><span>授权文件,只影响分发合规,不影响日常使用。</span></div>
+            <div class="package-cell"><code>无 assets/</code><span>没有固定模板、图片素材或样式资源。</span></div>
+            <div class="package-cell"><code>无 examples/</code><span>没有示例产物,效果由提示词和模型现场生成。</span></div>
           </div>
-          <div class="item">
-            <div class="label">反馈模板(可复制)</div>
-            <div class="value">
-              <pre id="feedback-template" style="background:#fff;border:1px solid var(--line);font-size:14px;">我跑了 frontend-design,prompt 是: [你的 prompt]
-生成的 HTML: [path 或片段]
-
-不对劲的地方:
-1. [比如:还是用了 Inter / 系统字体]
-2. [比如:版式很常规,没有视觉锚点]
-3. [比如:配色就是紫色渐变 + 白底]
-
-期望但没出现的:
-- [比如:某个具体设计师的版式语言]
-- [比如:特定的装饰元素(grain / 异形 mask / custom cursor)]
-
-修哪里:
-- 改 prompt(我给的不够具体)/ 改 SKILL.md 加视觉锚点 / 加一份 references 风格档案</pre>
-              <button class="copy-btn" type="button" data-copy-target="feedback-template" style="margin-top:12px;">复制模板</button>
-            </div>
+          <div class="workflow-title">主流程:从输入到页面</div>
+          <div class="relation-flow">
+            <div class="relation-step"><code>用户给页面需求</code><span style="font-weight:500;font-size:13px;color:var(--muted)">主题、风格、内容、目标用户或已有代码</span></div>
+            <div class="relation-step"><code>SKILL.md</code><span style="font-weight:500;font-size:13px;color:var(--muted)">要求 Claude 先做设计计划和自我批判,再约束字体、配色、动效、版式和文案</span></div>
+            <div class="relation-step"><code>HTML / CSS</code><span style="font-weight:500;font-size:13px;color:var(--muted)">最终页面由模型现场生成,不是从固定模板套出来</span></div>
           </div>
-          <div class="item">
-            <div class="label">还可以怎么用</div>
-            <div class="value">
-              · 自己有强烈视觉偏好时,不要让 frontend-design 自由选风格,先把参考图 / 设计师名 / 配色档喂给 Claude,再让 skill 落地。<br>
-              · 团队里固定一份"我们的 frontend-design 风格档案"(色板 + 字体对 + 间距尺度),让所有页面引用,避免每个页面风格漂移。<br>
-              · 学习用途:看 frontend-design 在不同 prompt 下选了什么字体 / 什么配色 / 什么版式语言,反过来扩充自己的设计词汇。
-            </div>
+          <div class="workflow-title">旁路文件:不直接生成页面,但帮助使用和分发</div>
+          <div class="workflow-side">
+            <div class="relation-step"><code>LICENSE.txt</code><span style="font-weight:500;font-size:13px;color:var(--muted)">只负责授权合规</span></div>
+            <div class="relation-step"><code>缺少 examples/</code><span style="font-weight:500;font-size:13px;color:var(--muted)">无法用自带样例对比启用前后的差异</span></div>
+          </div>
+          <div class="value workflow-note"><strong>一句话看懂:</strong>真正影响页面的是 <code>SKILL.md</code>;授权文件只是分发合规;没有 examples 或 assets,所以成品稳定性主要靠用户补参考和后续浏览器验证。</div>
+        </div>
+        <div class="box">
+          <div class="label">什么时候最适合</div>
+          <div class="value">
+            · 需要一个看起来不像默认生成风格的品牌页、活动页、展示页或海报。<br>
+            · 你已经有主题,但缺少明确视觉语言,想让 Claude 帮你把风格做出来。<br>
+            · 第一版页面太普通,想换成更有记忆点的视觉方向。
+          </div>
+        </div>
+        <div class="box">
+          <div class="label">不能做什么</div>
+          <div class="value">
+            · 不能替你决定品牌方向;你给的主题越具体,效果越稳。<br>
+            · 不能生成真实图片资源;配图、插画、图标要另外准备或搭配图片能力。<br>
+            · 不能自动验证浏览器渲染;成品仍要打开看响应式、动效和可读性。<br>
+            · 不适合后端脚本、纯数据处理、内部管理页这类非视觉任务。
           </div>
         </div>
       </div>

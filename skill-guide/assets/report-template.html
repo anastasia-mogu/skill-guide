@@ -14,12 +14,15 @@
       --panel: #fbfbfc;
       --accent: #ff4d2e;
       --ok: #0f8a4b;
-      --warn: #e5484d;
+      --warn: #ff4d2e;
       --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
       --mono: "SF Mono", Menlo, Consolas, monospace;
     }
 
     * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+    section { scroll-margin-top: 20px; }
 
     body {
       margin: 0;
@@ -93,6 +96,46 @@
       margin-right: 8px;
     }
 
+    .toc {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+      margin: -28px 0 8px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 12px 14px;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: var(--panel);
+      color: var(--body);
+      font-size: 14px;
+      line-height: 1.4;
+      text-decoration: none;
+      transition: border-color .15s, color .15s;
+    }
+
+    .toc a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .toc a .toc-num {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      margin-right: 8px;
+    }
+
+    .toc a .toc-tag {
+      display: inline-block;
+      margin-left: 6px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
     section { margin-top: 64px; }
 
     h2 {
@@ -143,7 +186,7 @@
       display: inline-flex;
       align-items: center;
       min-height: 22px;
-      margin-left: 8px;
+      margin: 0 8px 0 0;
       padding: 0 8px;
       border: 1px solid rgba(15, 138, 75, .28);
       border-radius: 999px;
@@ -159,6 +202,25 @@
       border-color: rgba(229, 72, 77, .26);
       color: var(--warn);
       background: rgba(229, 72, 77, .06);
+    }
+
+    .badge.optional,
+    .badge.unknown {
+      border-color: rgba(116, 119, 125, .3);
+      color: var(--muted);
+      background: rgba(116, 119, 125, .06);
+    }
+
+    .item-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .item-head .label {
+      margin-bottom: 0;
     }
 
     .meta-strip {
@@ -221,6 +283,8 @@
       line-height: 1.65;
     }
 
+    .judge-grid > .span-all { grid-column: 1 / -1; }
+
     .content-grid {
       display: grid;
       gap: 20px;
@@ -228,8 +292,8 @@
 
     .relation-flow {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
+      grid-template-columns: 1fr;
+      gap: 10px;
       margin: 14px 0 18px;
     }
 
@@ -237,7 +301,8 @@
       min-height: 54px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      gap: 12px;
       padding: 12px 14px;
       border: 1px solid #dfe3e7;
       border-radius: 4px;
@@ -246,7 +311,58 @@
       font-size: 15px;
       line-height: 1.35;
       font-weight: 700;
-      text-align: center;
+      text-align: left;
+    }
+
+    .workflow-note { margin-top: 18px; }
+
+    .workflow-title {
+      margin: 18px 0 10px;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .workflow-side {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .workflow-side .relation-step {
+      min-height: 46px;
+      border-style: dashed;
+      background: #fbfbfc;
+    }
+
+    .package-map {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 12px 0 20px;
+    }
+
+    .package-cell {
+      min-height: 72px;
+      padding: 13px 14px;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    .package-cell code {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .package-cell span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 500;
     }
 
     .prompt-card {
@@ -257,6 +373,10 @@
     }
 
     .prompt-card + .prompt-card {
+      margin-top: 22px;
+    }
+
+    .followup-box {
       margin-top: 22px;
     }
 
@@ -277,8 +397,39 @@
     }
 
     .prep-body {
-      padding: 30px 34px;
+      padding: 34px 36px;
       background: var(--panel);
+    }
+
+    .prep-body .item {
+      padding-bottom: 34px;
+    }
+
+    .prep-body .item + .item {
+      padding-top: 34px;
+    }
+
+    .prep-body .value {
+      line-height: 1.82;
+    }
+
+    .prep-body .copy-block {
+      margin-top: 22px;
+      position: relative;
+    }
+
+    .prep-body .copy-block pre {
+      margin-top: 0;
+      padding-top: 22px;
+      padding-bottom: 72px;
+    }
+
+    .copy-block .copy-btn {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      z-index: 1;
+      background: #fff;
     }
 
     .copy-btn {
@@ -342,6 +493,14 @@
 
     td { background: #fff; }
 
+    td .diff {
+      background: rgba(255, 77, 46, .1);
+      border-radius: 3px;
+      padding: 1px 4px;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
     .footer {
       margin-top: 72px;
       padding-top: 20px;
@@ -350,7 +509,7 @@
       font-size: 13px;
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 560px) {
       .page {
         width: min(100% - 28px, 980px);
         padding-top: 34px;
@@ -372,6 +531,17 @@
       h1 { font-size: 25px; }
       h2 { font-size: 21px; }
 
+      .item-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .prep-body {
+        padding: 24px 18px;
+      }
+
+      .package-map { grid-template-columns: 1fr; }
+
       table {
         display: block;
         overflow-x: auto;
@@ -390,7 +560,17 @@
       <div class="brand"><span class="brand-mark">▣</span>skill-guide</div>
     </header>
 
-    <section>
+    <nav class="toc" aria-label="目录">
+      <a href="#sec-1"><span class="toc-num">01</span>一句话结论</a>
+      <a href="#sec-2"><span class="toc-num">02</span>快速判断<span class="toc-tag">含 token 预估</span></a>
+      <a href="#sec-3"><span class="toc-num">03</span>直接开始用</a>
+      <a href="#sec-4"><span class="toc-num">04</span>和什么技能最搭配</a>
+      <a href="#sec-5"><span class="toc-num">05</span>产出物对照</a>
+      <a href="#sec-6"><span class="toc-num">06</span>完整度与改善点</a>
+      <a href="#sec-7"><span class="toc-num">07</span>适合谁用，不能做什么</a>
+    </nav>
+
+    <section id="sec-1">
       <h2>1. 一句话结论</h2>
       <div class="box">
         <div class="stack">
@@ -410,23 +590,18 @@
       </div>
     </section>
 
-    <section>
+    <section id="sec-2">
       <h2>2. 快速判断</h2>
-      <div class="meta-strip">
-        <div class="meta-cell"><span class="meta-label">完整度</span><span class="meta-value hot">{{SCORE}}</span></div>
-        <div class="meta-cell"><span class="meta-label">对象类型</span><span class="meta-value">{{OBJECT_TYPE}}</span></div>
-        <div class="meta-cell"><span class="meta-label">搭配模式</span><span class="meta-value">{{PAIRING_MODE}}</span></div>
-      </div>
       <div class="judge-grid">
         {{OBJECT_CARDS}}
       </div>
     </section>
 
-    <section>
-      <h2>3. 直接试用</h2>
+    <section id="sec-3">
+      <h2>3. 直接开始用</h2>
       <div class="prompt-card">
         <div class="prompt-head">
-          <div class="prompt-title">第一次试用 prompt</div>
+          <div class="prompt-title">第一次试用提示词</div>
           <button class="copy-btn" type="button" data-copy-target="trial-prompt">复制</button>
         </div>
         <pre id="trial-prompt">{{TRIAL_PROMPT}}</pre>
@@ -442,47 +617,34 @@
           {{PREP_CARDS}}
         </div>
       </div>
+      {{FOLLOWUP_CARDS}}
     </section>
 
-    <section>
-      <h2>4. 这个 skill 是什么</h2>
-      <div class="content-grid">
-        {{USAGE_CARDS}}
-      </div>
-    </section>
-
-    <section>
-      <h2>5. 搭配使用建议</h2>
+    <section id="sec-4">
+      <h2>4. 和什么技能最搭配</h2>
       <div class="content-grid">
         {{PAIRING_STEPS}}
       </div>
     </section>
 
-    <section>
-      <h2>6. 什么时候适合用</h2>
-      <div class="content-grid">
-        {{BOUNDARY_CARDS}}
-      </div>
-    </section>
-
-    <section>
-      <h2>7. 最好能产出什么</h2>
+    <section id="sec-5">
+      <h2>5. 产出物对照</h2>
       <table>
         {{REAL_IO}}
       </table>
     </section>
 
-    <section>
-      <h2>8. 完整度与风险</h2>
+    <section id="sec-6">
+      <h2>6. 完整度与改善点</h2>
       <div class="content-grid">
         {{RISK_CARDS}}
       </div>
     </section>
 
-    <section>
-      <h2>9. 试用失败后怎么找我修</h2>
-      <div class="box">
-        {{FEEDBACK_TICKET}}
+    <section id="sec-7">
+      <h2>7. 适合谁用，不能做什么</h2>
+      <div class="content-grid">
+        {{USAGE_CARDS}}
       </div>
     </section>
 
