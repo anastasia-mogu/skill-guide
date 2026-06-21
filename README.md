@@ -6,6 +6,12 @@
 
 > 适用平台:Claude Code、Codex / OpenAI Agent SDK、以及任何能加载 skill 目录的 Claude Agent。
 
+## 当前版本
+
+当前版本:`v1.1.0`
+
+这版是一次规则和模板迭代版:固定 7 节报告结构,新增产出物对照、Pro/Plus 复制块、交付前最小自检,并补充更多示例报告。
+
 ## 它能做什么
 
 丢给它一个 skill 目录、一个 SKILL.md、一个压缩包,或一个 multi-skill 仓库的根目录,它会:
@@ -143,6 +149,11 @@ rm ~/.claude/skills/skill-guide ~/.codex/skills/skill-guide
 
 - 输出前会做最小结构自检,用于防止 7 节结构、复制按钮、搭配标签、文件关系图等关键规则漂移;但它不替代人工审美判断和浏览器渲染检查。同一个 skill 跑两次,内容判断和版式细节仍可能需要人工把关。
 - 示例已有 3 份(自我解读 + 单 skill 指导型 + PPT 文件产物型),但 multi-skill 仓库 / 不是 skill 项目 / 文件编辑类高风险 skill 还缺对照样例。
+
+## 版本记录
+
+- `v1.1.0` — 固定 7 节结构,新增产出物对照、Pro/Plus 复制块、交付前最小自检,同步更新模板和 3 份示例报告。
+- `v1.0.0` — 初始可用版,建立 skill-guide 的核心解读流程、HTML 报告模板和基础示例。
 
 ## License
 
