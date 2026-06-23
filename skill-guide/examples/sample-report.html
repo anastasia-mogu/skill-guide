@@ -15,6 +15,7 @@
       --accent: #ff4d2e;
       --ok: #0f8a4b;
       --warn: #ff4d2e;
+      --caution: #202124;
       --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
       --mono: "SF Mono", Menlo, Consolas, monospace;
     }
@@ -175,6 +176,7 @@
     .ok { color: var(--ok); font-weight: 700; }
     .hot { color: var(--accent); font-weight: 700; }
     .warn { color: var(--warn); font-weight: 700; }
+    .caution { color: var(--caution); font-weight: 700; }
 
     .badge {
       display: inline-flex;
@@ -193,16 +195,24 @@
     }
 
     .badge.need {
-      border-color: rgba(229, 72, 77, .26);
-      color: var(--warn);
-      background: rgba(229, 72, 77, .06);
+      border-color: rgba(217, 131, 36, .28);
+      color: var(--caution);
+      background: rgba(217, 131, 36, .07);
     }
 
-    .badge.optional,
     .badge.unknown {
       border-color: rgba(116, 119, 125, .3);
       color: var(--muted);
       background: rgba(116, 119, 125, .06);
+    }
+
+    .stars {
+      margin-left: 6px;
+      color: var(--caution);
+      letter-spacing: 1px;
+      font-size: 12px;
+      vertical-align: 1px;
+      white-space: nowrap;
     }
 
     .item-head {
@@ -315,6 +325,51 @@
       color: var(--muted);
       font-size: 13px;
       line-height: 1.45;
+      font-weight: 500;
+    }
+
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .artifact-card {
+      display: block;
+      overflow: hidden;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: #fff;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .artifact-body { padding: 14px; }
+
+    .artifact-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .artifact-type {
+      flex: none;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .artifact-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
       font-weight: 500;
     }
 
@@ -484,7 +539,8 @@
       h2 { font-size: 21px; }
       .item-head { align-items: flex-start; flex-direction: column; }
       .prep-body { padding: 24px 18px; }
-      .package-map { grid-template-columns: 1fr; }
+      .package-map,
+      .artifact-grid { grid-template-columns: 1fr; }
       table { display: block; overflow-x: auto; white-space: nowrap; }
     }
   </style>
@@ -504,7 +560,7 @@
       <a href="#sec-2"><span class="toc-num">02</span>快速判断<span class="toc-tag">含 token 预估</span></a>
       <a href="#sec-3"><span class="toc-num">03</span>直接开始用</a>
       <a href="#sec-4"><span class="toc-num">04</span>和什么技能最搭配</a>
-      <a href="#sec-5"><span class="toc-num">05</span>产出物对照</a>
+      <a href="#sec-5"><span class="toc-num">05</span>产出物示例</a>
       <a href="#sec-6"><span class="toc-num">06</span>完整度与改善点</a>
       <a href="#sec-7"><span class="toc-num">07</span>适合谁用，不能做什么</a>
     </nav>
@@ -519,11 +575,11 @@
           </div>
           <div class="item">
             <div class="label">当前判断</div>
-            <div class="value"><span class="ok">可以直接使用</span>。最新版把报告固定成 7 节,并补了快速判断、Pro/Plus 复制区、文件关系图、搭配标签、风险命名和交付前最小自检,比旧版更稳定。</div>
+            <div class="value"><span class="ok">可以直接使用</span>。最新版默认 6 节,发现真实可打开 example 时才插入"产出物示例",并补了快速判断、Pro/Plus 复制区、文件关系图、搭配标签、风险命名和交付前最小自检。</div>
           </div>
           <div class="item">
             <div class="label">风险提示</div>
-            <div class="value"><span class="warn">最大缺口是脚本化校验还没固化</span>。SKILL.md 已要求交付前检查 7 节、5 个快速判断格、复制块、搭配标签和文件关系图;但这一步目前仍靠模型用 rg / 浏览器按清单执行,不是一键脚本。</div>
+            <div class="value"><span class="caution">最大缺口已从结构校验转向内容判断</span>。现在可以用脚本检查 6/7 节、5 个快速判断格、复制块、搭配标签、星级和文件关系图;但内容准不准、风险排序对不对、版式舒不舒服仍要人工看。</div>
           </div>
         </div>
       </div>
@@ -534,7 +590,7 @@
       <div class="judge-grid">
         <div>
           <div class="label">完整度</div>
-          <div class="judge-value"><span class="hot">94 / 100</span></div>
+          <div class="judge-value"><span class="hot">96 / 100</span></div>
         </div>
         <div>
           <div class="label">推荐动作</div>
@@ -542,8 +598,8 @@
         </div>
         <div>
           <div class="label">最大风险</div>
-          <div class="judge-value"><span class="warn">脚本化校验未固化</span></div>
-          <div class="judge-note">最小自检规则已经写入 SKILL.md,但还没有脚本自动检查章节、复制按钮、标签样式和响应式表现。</div>
+          <div class="judge-value"><span class="caution">内容判断仍需人工</span></div>
+          <div class="judge-note">结构脚本能抓章节、复制块、搭配标签和旧占位符,但不会判断内容是否准确、风险是否排对、版式是否好看。</div>
         </div>
         <div>
           <div class="label">直接使用风险</div>
@@ -567,14 +623,14 @@
         </div>
         <pre id="trial-prompt">用 skill-guide 解读这个 skill,生成 HTML 说明书:
 
-/Users/liuyun/AI/github-skills/skill-guide/skill-guide
+./skill-guide
 
 要求:
 - 给完整度评分和推荐动作
-- 列出搭配建议(标明已有 / 需安装)
+- 列出搭配建议(标签标明本机安装状态,星级放在分组标题里)
 - 给一段第一次试用提示词
-- 产出物对照要写清楚"我多给什么,通常多拿到什么"
-- 生成 HTML 后按交付前最小自检检查 7 节、5 格、copy-block、badge、文件关系图和旧章节残留
+- 如果仓库里有可打开的真实 example,第 5 节展示产出物示例;没有就不显示第 5 节
+- 生成 HTML 后按交付前最小自检检查 6/7 节、5 格、copy-block、badge、文件关系图和旧章节残留
 - HTML 报告保存在当前工作区,聊天里只给摘要和路径</pre>
       </div>
       <div class="prompt-card">
@@ -596,7 +652,7 @@
                 <pre id="pro-prompt">请在刚才的基础要求上继续补充:
 
 - 这份报告是给非技术用户看的,少讲内部分类,多讲怎么开始用
-- 请保留 7 节结构,重点检查快速判断、文件关系图、搭配标签和产出物对照
+- 请保持 6/7 节结构,重点检查快速判断、文件关系图、搭配标签和真实示例展示
 - 如果发现高风险问题才写"风险点",普通缺口写"改善点"
 - 交付前请按最小自检做一遍结构复核</pre>
               </div>
@@ -607,7 +663,7 @@
               </div>
               <div class="value">
                 · <strong>多 skill 仓库</strong>:丢仓库根目录,先要"清单 + 工作流地图 + 推荐深读 1-3 个",不要一次性深读全部。<br>
-                · <strong>稳定性实验</strong>:让它用同一个 skill 连续生成两版,对比 7 节结构、快速判断和高阶提示词是否稳定。<br>
+                · <strong>稳定性实验</strong>:让它用同一个 skill 连续生成两版,对比 6/7 节结构、快速判断和高阶提示词是否稳定。<br>
                 · <strong>失败案例对照</strong>:补一个你不满意的旧报告,让 skill-guide 判断该修 SKILL.md、模板还是提示词。<br>
                 · <strong>模板验证</strong>:要求生成后用浏览器检查 631px 和 390px 两档,确认没有横向溢出。
               </div>
@@ -617,7 +673,7 @@
 
 - 如果这是多 skill 仓库,先做包级清单和工作流地图,不要一次性深读全部
 - 如果有旧版报告或失败案例,请对照指出问题来自内容规则、模板样式还是提示词
-- 生成 HTML 后按"交付前最小自检"检查 7 节标题、5 个快速判断格、Pro/Plus 复制块、badge 标签、文件关系图和移动端不溢出
+- 生成 HTML 后按"交付前最小自检"检查 6/7 节标题、5 个快速判断格、Pro/Plus 复制块、badge 标签、文件关系图和移动端不溢出
 - 最终报告仍然保存为自包含 HTML</pre>
               </div>
             </div>
@@ -634,84 +690,67 @@
       <h2>4. 和什么技能最搭配</h2>
       <div class="content-grid">
         <div class="box">
-          <div class="label">单独用 — 够用</div>
+          <div class="label">单独用够不够</div>
           <div class="value">只要目标是"看懂一个 skill、判断能不能试、生成说明书",skill-guide 自己就能闭环:输入路径 → 读取结构 → 输出 HTML 报告 + 聊天摘要。</div>
         </div>
         <div class="box">
-          <div class="label">最佳搭配(后置)</div>
+          <div class="label">最值得搭配 <span class="stars">★★★★★</span></div>
           <div class="value">
-            · <span class="badge">已有</span><strong>verify</strong> — skill-guide 给出第一次试用提示词后,用 verify 真的跑起来确认行为,而不是只看报告判断。<br>
-            · <span class="badge">已有</span><strong>frontend-design</strong> — 当报告要对外交付或展示,在 skill-guide 输出后优化 HTML/CSS 的视觉细节。
+            · <span class="badge unknown">安装状态未知</span><strong>verify</strong> — skill-guide 给出第一次试用提示词后,用 verify 真的跑起来确认行为,而不是只看报告判断。<br>
+            · <span class="badge unknown">安装状态未知</span><strong>frontend-design</strong> — 当报告要对外交付或展示,在 skill-guide 输出后优化 HTML/CSS 的视觉细节。
           </div>
         </div>
         <div class="box">
-          <div class="label">可选搭配</div>
+          <div class="label">按需搭配 <span class="stars">★★★</span></div>
           <div class="value">
-            · <span class="badge">已有</span><strong>code-review / simplify</strong> — 从解读进入修复副本阶段后,用它们清理代码、压缩冗余和查回归。<br>
-            · <span class="badge optional">可选</span><strong>browser</strong> — 成品 HTML 需要验响应式、复制按钮、横向溢出时,用浏览器做最终检查。<br>
-            · <span class="badge optional">可选</span><strong>deep-research</strong> — 被解读 skill 涉及陌生行业或外部资料时,先调研再解读会更准。
+            · <span class="badge unknown">安装状态未知</span><strong>code-review / simplify</strong> — 从解读进入修复副本阶段后,用它们清理代码、压缩冗余和查回归。<br>
+            · <span class="badge unknown">安装状态未知</span><strong>browser</strong> — 成品 HTML 需要验响应式、复制按钮、横向溢出时,用浏览器做最终检查。
           </div>
         </div>
       </div>
     </section>
 
     <section id="sec-5">
-      <h2>5. 产出物对照</h2>
-      <table>
-        <thead>
-          <tr><th style="width:96px">输入投入</th><th style="width:240px">你提供什么</th><th>通常能拿到（高亮＝多给后多得的）</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>最少</td>
-            <td>一个 skill 目录路径 / 单个 SKILL.md</td>
-            <td>一份基础 HTML 说明书,7 节齐全:结论、快速判断、试用提示词、适用边界、搭配、产出对照、改善点。真实依赖和风险以文档判断为主。</td>
-          </tr>
-          <tr>
-            <td>补充</td>
-            <td>＋依赖说明、真实输入样例、跑过的例子</td>
-            <td>基础报告,并 <span class="diff">把真实输入输出坐实、依赖逐项确认、风险与验证写得更准</span>,快速判断标色更有依据。</td>
-          </tr>
-          <tr>
-            <td>充分</td>
-            <td>＋失败案例、运行环境、已有产物样例</td>
-            <td>前述全部,并 <span class="diff">形成可交付版本:验证到位、能分享存档、能反推该改规则还是改模板</span>;本 skill 自带示例可参考 <a href="frontend-design-report.html">frontend-design 报告</a> 和 <a href="ppt-master-report.html">ppt-master 报告</a>。</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="3">以上为通常可形成的预期(非承诺);给得越准,结果越准。真实输出:HTML 存当前工作区,聊天回摘要和路径;真实输入:本地目录、SKILL.md、压缩包、GitHub URL(需先下载到本地)。</td>
-          </tr>
-        </tfoot>
-      </table>
+      <h2>5. 产出物示例</h2>
+      <div class="box">
+        <div class="label">现成可打开示例</div>
+        <div class="value"><span class="ok">可以直接点开。</span>skill-guide 自带示例报告,所以这里展示真实 HTML 产物;不展示需要生成、下载或跑脚本后才出现的内容。</div>
+        <div class="artifact-grid">
+          <a class="artifact-card" href="frontend-design-report.html">
+            <div class="artifact-body">
+              <div class="artifact-title">frontend-design 报告 <span class="artifact-type">HTML</span></div>
+              <div class="artifact-desc">展示单 skill、纯指导型对象的报告形态:快速判断、Pro/Plus 提示词、搭配标签、改善点和文件关系图。</div>
+            </div>
+          </a>
+        </div>
+      </div>
     </section>
 
     <section id="sec-6">
       <h2>6. 完整度与改善点</h2>
       <div class="content-grid">
         <div class="box">
-          <div class="label">完整度 <span class="hot">94 / 100</span> — 可以直接使用</div>
-          <div class="value">SKILL.md 已经把"读什么 / 评什么 / 输出什么 / 什么时候停 / 如何命名风险 / 如何保持版式稳定"写清楚了,并新增交付前最小自检。模板也同步了 7 节目录、Pro/Plus 复制区、搭配标签和移动端适配。</div>
+          <div class="label">完整度 <span class="hot">96 / 100</span> — 可以直接使用</div>
+          <div class="value">SKILL.md 已经把"读什么 / 评什么 / 输出什么 / 什么时候停 / 如何命名风险 / 如何保持版式稳定"写清楚了,并新增结构校验脚本。模板也同步了 6/7 节目录、Pro/Plus 复制区、搭配标签、星级和移动端适配。</div>
         </div>
         <div class="box">
-          <div class="label">改善点 1 — 脚本化校验未固化 <span class="warn">效率缺口</span></div>
+          <div class="label">改善点 1 — 内容判断还不能脚本化 <span class="caution">人工判断</span></div>
           <div class="value">
-            <strong>用户会看到:</strong>现在规则要求生成后做最小自检,但没有一键脚本,仍靠 rg、浏览器和人工判断执行清单。<br>
-            <strong>影响:</strong>第三方使用时会比旧版稳定,但执行者可能漏跑或漏看,大批量稳定性实验效率不够高。<br>
-            <strong>怎么处理:</strong>后续加一个可选的最小校验脚本,只查结构和关键样式,不替代人工审美判断。修复咨询提示词:<br>
-            <em>"在 assets/ 里加一个 validate-report.mjs,检查报告是否包含 7 个 section 标题、快速判断 5 格、文件关系图、Pro/Plus copy-block、.badge 标签,且没有旧章节名和模板占位符。"</em>
+            <strong>用户会看到:</strong>脚本能发现结构漂移,但不能判断"最大风险"是否真的最大,也不能判断文案是否容易懂。<br>
+            <strong>影响:</strong>报告会更稳定,但最终仍需要人看一遍内容和版式。<br>
+            <strong>怎么处理:</strong>生成后先跑 <code>python3 skill-guide/scripts/validate-report.py</code>,再用浏览器预览重点看内容判断和窄屏观感。
           </div>
         </div>
         <div class="box">
-          <div class="label">改善点 2 — 多补几类样例 <span class="warn">泛化验证不足</span></div>
+          <div class="label">改善点 2 — 多做临时实验 <span class="caution">泛化验证不足</span></div>
           <div class="value">
-            <strong>用户会看到:</strong><code>examples/</code> 已覆盖自我解读、frontend-design 和 ppt-master,但还没有多 skill 仓库、不是 skill 的项目、文件编辑类高风险 skill 这些样例。<br>
+            <strong>用户会看到:</strong><code>examples/</code> 只保留自我解读和 frontend-design 两份核心样例,没有把多 skill 仓库、文件产物型、非 skill 项目和文件编辑类高风险 skill 都长期塞进仓库。<br>
             <strong>影响:</strong>新规则在复杂场景里是否稳定,还缺真实对照。<br>
-            <strong>怎么处理:</strong>接下来拿一个多 skill 仓库或文件类 skill 做实验,把新报告收进 examples,再反推 SKILL.md 需要补哪些约束。
+            <strong>怎么处理:</strong>接下来拿一个多 skill 仓库或文件类 skill 做临时实验,只在规则有价值时反推 SKILL.md 约束,不把所有实验报告长期收进 examples。
           </div>
         </div>
         <div class="box">
-          <div class="label">改善点 3 — 修复副本规则还能再硬一点 <span class="warn">边界提醒</span></div>
+          <div class="label">改善点 3 — 修复副本规则还能再硬一点 <span class="caution">边界提醒</span></div>
           <div class="value">
             <strong>用户会看到:</strong>SKILL.md 已写"解读阶段只读、不默认修复",但修复阶段只说优先创建副本,还没有要求"动手前复述副本路径"。<br>
             <strong>影响:</strong>用户一旦用含糊说法要求修改,模型可能需要临场判断是否直接改原 skill。<br>
@@ -742,7 +781,7 @@
           <div class="workflow-title">主流程:从输入到报告</div>
           <div class="relation-flow">
             <div class="relation-step"><code>用户给 skill 路径</code><span style="font-weight:500;font-size:13px;color:var(--muted)">目录、SKILL.md、压缩包或仓库根目录</span></div>
-            <div class="relation-step"><code>SKILL.md</code><span style="font-weight:500;font-size:13px;color:var(--muted)">决定读什么、怎么判断、报告固定写成哪 7 节</span></div>
+            <div class="relation-step"><code>SKILL.md</code><span style="font-weight:500;font-size:13px;color:var(--muted)">决定读什么、怎么判断、报告写成默认 6 节还是带示例的 7 节</span></div>
             <div class="relation-step"><code>assets/report-template.html</code><span style="font-weight:500;font-size:13px;color:var(--muted)">把判断内容装进可预览 HTML,负责目录、卡片、表格和复制按钮</span></div>
             <div class="relation-step"><code>examples/*.html</code><span style="font-weight:500;font-size:13px;color:var(--muted)">作为成品样例和回归对照,观察规则改完后是否稳定</span></div>
           </div>

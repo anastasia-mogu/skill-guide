@@ -15,6 +15,7 @@
       --accent: #ff4d2e;
       --ok: #0f8a4b;
       --warn: #ff4d2e;
+      --caution: #202124;
       --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
       --mono: "SF Mono", Menlo, Consolas, monospace;
     }
@@ -181,6 +182,7 @@
     .ok { color: var(--ok); font-weight: 700; }
     .hot { color: var(--accent); font-weight: 700; }
     .warn { color: var(--warn); font-weight: 700; }
+    .caution { color: var(--caution); font-weight: 700; }
 
     .badge {
       display: inline-flex;
@@ -199,16 +201,25 @@
     }
 
     .badge.need {
-      border-color: rgba(229, 72, 77, .26);
-      color: var(--warn);
-      background: rgba(229, 72, 77, .06);
+      border-color: rgba(217, 131, 36, .28);
+      color: var(--caution);
+      background: rgba(217, 131, 36, .07);
     }
 
-    .badge.optional,
     .badge.unknown {
       border-color: rgba(116, 119, 125, .3);
       color: var(--muted);
       background: rgba(116, 119, 125, .06);
+    }
+
+    /* 分组推荐指数：只放在第 4 节分组标题里 */
+    .stars {
+      margin-left: 6px;
+      color: var(--caution);
+      letter-spacing: 1px;
+      font-size: 12px;
+      vertical-align: 1px;
+      white-space: nowrap;
     }
 
     .item-head {
@@ -335,14 +346,16 @@
       background: #fbfbfc;
     }
 
-    .package-map {
+    .package-map,
+    .skill-map {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
       margin: 12px 0 20px;
     }
 
-    .package-cell {
+    .package-cell,
+    .skill-cell {
       min-height: 72px;
       padding: 13px 14px;
       border: 1px solid #dfe3e7;
@@ -350,7 +363,8 @@
       background: #fff;
     }
 
-    .package-cell code {
+    .package-cell code,
+    .skill-cell code {
       display: block;
       margin-bottom: 6px;
       color: var(--ink);
@@ -358,10 +372,65 @@
       font-weight: 700;
     }
 
-    .package-cell span {
+    .package-cell span,
+    .skill-cell span {
       color: var(--muted);
       font-size: 13px;
       line-height: 1.45;
+      font-weight: 500;
+    }
+
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .artifact-card {
+      display: block;
+      overflow: hidden;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: #fff;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .artifact-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-bottom: 1px solid #dfe3e7;
+      background: var(--panel);
+    }
+
+    .artifact-body { padding: 14px; }
+
+    .artifact-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .artifact-type {
+      flex: none;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .artifact-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
       font-weight: 500;
     }
 
@@ -540,7 +609,10 @@
         padding: 24px 18px;
       }
 
-      .package-map { grid-template-columns: 1fr; }
+      .package-map,
+      .skill-map { grid-template-columns: 1fr; }
+
+      .artifact-grid { grid-template-columns: 1fr; }
 
       table {
         display: block;
@@ -565,9 +637,9 @@
       <a href="#sec-2"><span class="toc-num">02</span>快速判断<span class="toc-tag">含 token 预估</span></a>
       <a href="#sec-3"><span class="toc-num">03</span>直接开始用</a>
       <a href="#sec-4"><span class="toc-num">04</span>和什么技能最搭配</a>
-      <a href="#sec-5"><span class="toc-num">05</span>产出物对照</a>
-      <a href="#sec-6"><span class="toc-num">06</span>完整度与改善点</a>
-      <a href="#sec-7"><span class="toc-num">07</span>适合谁用，不能做什么</a>
+      {{OPTIONAL_EXAMPLES_TOC}}
+      {{RISK_TOC}}
+      {{USAGE_TOC}}
     </nav>
 
     <section id="sec-1">
@@ -627,26 +699,11 @@
       </div>
     </section>
 
-    <section id="sec-5">
-      <h2>5. 产出物对照</h2>
-      <table>
-        {{REAL_IO}}
-      </table>
-    </section>
+    {{OPTIONAL_EXAMPLES_SECTION}}
 
-    <section id="sec-6">
-      <h2>6. 完整度与改善点</h2>
-      <div class="content-grid">
-        {{RISK_CARDS}}
-      </div>
-    </section>
+    {{RISK_SECTION}}
 
-    <section id="sec-7">
-      <h2>7. 适合谁用，不能做什么</h2>
-      <div class="content-grid">
-        {{USAGE_CARDS}}
-      </div>
-    </section>
+    {{USAGE_SECTION}}
 
     <p class="footer">{{FOOTER}}</p>
   </main>

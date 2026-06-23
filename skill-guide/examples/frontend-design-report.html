@@ -15,6 +15,7 @@
       --accent: #ff4d2e;
       --ok: #0f8a4b;
       --warn: #ff4d2e;
+      --caution: #202124;
       --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
       --mono: "SF Mono", Menlo, Consolas, monospace;
     }
@@ -175,6 +176,7 @@
     .ok { color: var(--ok); font-weight: 700; }
     .hot { color: var(--accent); font-weight: 700; }
     .warn { color: var(--warn); font-weight: 700; }
+    .caution { color: var(--caution); font-weight: 700; }
 
     .badge {
       display: inline-flex;
@@ -193,16 +195,24 @@
     }
 
     .badge.need {
-      border-color: rgba(229, 72, 77, .26);
-      color: var(--warn);
-      background: rgba(229, 72, 77, .06);
+      border-color: rgba(217, 131, 36, .28);
+      color: var(--caution);
+      background: rgba(217, 131, 36, .07);
     }
 
-    .badge.optional,
     .badge.unknown {
       border-color: rgba(116, 119, 125, .3);
       color: var(--muted);
       background: rgba(116, 119, 125, .06);
+    }
+
+    .stars {
+      margin-left: 6px;
+      color: var(--caution);
+      letter-spacing: 1px;
+      font-size: 12px;
+      vertical-align: 1px;
+      white-space: nowrap;
     }
 
     .item-head {
@@ -325,6 +335,51 @@
       color: var(--muted);
       font-size: 13px;
       line-height: 1.45;
+      font-weight: 500;
+    }
+
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .artifact-card {
+      display: block;
+      overflow: hidden;
+      border: 1px solid #dfe3e7;
+      border-radius: 4px;
+      background: #fff;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .artifact-body { padding: 14px; }
+
+    .artifact-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .artifact-type {
+      flex: none;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .artifact-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
       font-weight: 500;
     }
 
@@ -482,7 +537,8 @@
       h2 { font-size: 21px; }
       .item-head { align-items: flex-start; flex-direction: column; }
       .prep-body { padding: 24px 18px; }
-      .package-map { grid-template-columns: 1fr; }
+      .package-map,
+      .artifact-grid { grid-template-columns: 1fr; }
       table { display: block; overflow-x: auto; white-space: nowrap; }
     }
   </style>
@@ -502,9 +558,8 @@
       <a href="#sec-2"><span class="toc-num">02</span>快速判断<span class="toc-tag">含 token 预估</span></a>
       <a href="#sec-3"><span class="toc-num">03</span>直接开始用</a>
       <a href="#sec-4"><span class="toc-num">04</span>和什么技能最搭配</a>
-      <a href="#sec-5"><span class="toc-num">05</span>产出物对照</a>
-      <a href="#sec-6"><span class="toc-num">06</span>完整度与改善点</a>
-      <a href="#sec-7"><span class="toc-num">07</span>适合谁用，不能做什么</a>
+      <a href="#sec-5"><span class="toc-num">05</span>完整度与改善点</a>
+      <a href="#sec-6"><span class="toc-num">06</span>适合谁用，不能做什么</a>
     </nav>
 
     <section id="sec-1">
@@ -521,7 +576,7 @@
           </div>
           <div class="item">
             <div class="label">风险提示</div>
-            <div class="value"><span class="warn">效果稳定性取决于视觉锚点</span>。只说"做个页面"也能触发它自选方向,但如果你补充参考品牌、受众、文案和现有页面,产出会明显更稳。</div>
+            <div class="value"><span class="caution">效果稳定性取决于视觉锚点</span>。只说"做个页面"也能触发它自选方向,但如果你补充参考品牌、受众、文案和现有页面,产出会明显更稳。</div>
           </div>
         </div>
       </div>
@@ -540,7 +595,7 @@
         </div>
         <div>
           <div class="label">最大风险</div>
-          <div class="judge-value"><span class="warn">缺少示例产物</span></div>
+          <div class="judge-value"><span class="caution">缺少示例产物</span></div>
           <div class="judge-note">规则很完整,但没有自带前后对照、截图或可复制风格档案。新用户不容易预判启用后会变成什么样。</div>
         </div>
         <div>
@@ -638,73 +693,36 @@
       <h2>4. 和什么技能最搭配</h2>
       <div class="content-grid">
         <div class="box">
-          <div class="label">单独用 — 看场景</div>
+          <div class="label">单独用够不够</div>
           <div class="value">做单页展示、海报、一次性页面时,单独够用。做完整产品、多页面站点、长期维护的设计系统时,需要前置素材和后置验证。</div>
         </div>
         <div class="box">
-          <div class="label">最佳搭配(前置)</div>
+          <div class="label">最值得搭配 <span class="stars">★★★★★</span></div>
           <div class="value">
-            · <span class="badge">已有</span><strong>relay-to-design-md</strong> — 设计师已有 Relay 或 Figma 稿时,先生成 <code>design.md</code>,再让 frontend-design 按设计说明落地代码。<br>
-            · <span class="badge">已有</span><strong>deep-research</strong> — 做陌生行业或陌生品牌时,先调研视觉参考,再让 frontend-design 锚定到具体设计语言。
+            · <span class="badge unknown">安装状态未知</span><strong>relay-to-design-md</strong> — 设计师已有 Relay 或 Figma 稿时,先生成 <code>design.md</code>,再让 frontend-design 按设计说明落地代码。<br>
+            · <span class="badge unknown">安装状态未知</span><strong>deep-research</strong> — 做陌生行业或陌生品牌时,先调研视觉参考,再让 frontend-design 锚定到具体设计语言。<br>
+            · <span class="badge unknown">安装状态未知</span><strong>verify</strong> — 生成 HTML 后实际打开页面,看渲染、响应式、键盘焦点和动效是否过载。
           </div>
         </div>
         <div class="box">
-          <div class="label">最佳搭配(后置)</div>
+          <div class="label">按需搭配 <span class="stars">★★★</span></div>
           <div class="value">
-            · <span class="badge">已有</span><strong>verify</strong> — 生成 HTML 后实际打开页面,看渲染、响应式、键盘焦点和动效是否过载。<br>
-            · <span class="badge">已有</span><strong>code-review / simplify</strong> — 视觉增强后的 CSS 容易变长,交付前清理一遍。
-          </div>
-        </div>
-        <div class="box">
-          <div class="label">可选搭配</div>
-          <div class="value">
-            · <span class="badge">已有</span><strong>skill-guide</strong> — 做完一份成品后,反向沉淀"我喜欢的字体、配色、版式选择",方便下次复用。<br>
-            · <span class="badge optional">可选</span><strong>frontend-design 自身组合</strong> — 多页面项目里先生成风格档案,后续每页都引用。
+            · <span class="badge unknown">安装状态未知</span><strong>code-review / simplify</strong> — 视觉增强后的 CSS 容易变长,交付前清理一遍。<br>
+            · <span class="badge">本机已有</span><strong>skill-guide</strong> — 做完一份成品后,反向沉淀"我喜欢的字体、配色、版式选择",方便下次复用。
           </div>
         </div>
       </div>
     </section>
 
     <section id="sec-5">
-      <h2>5. 产出物对照</h2>
-      <table>
-        <thead>
-          <tr><th style="width:96px">输入投入</th><th style="width:240px">你提供什么</th><th>通常能拿到（高亮＝多给后多得的）</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>最少</td>
-            <td>一句页面需求,比如"做个独立咖啡品牌 MONO 的首页"</td>
-            <td>一份有明确设计计划的 HTML/CSS:会主动选择色板、字体角色、版式概念和唯一记忆点,通常比默认页面更有观点;但品牌语气、素材和真实业务细节会偏推测。</td>
-          </tr>
-          <tr>
-            <td>补充</td>
-            <td>＋品牌关键词、参考风格、目标用户、页面内容、已有图片或文案</td>
-            <td>基础页面,并 <span class="diff">把风格锚点收窄到更具体的设计语言</span>:例如瑞士网格、杂志编辑感、冷峻工具页或某个品牌参考;字体层级、颜色、动效和文案会更贴近你的意图。</td>
-          </tr>
-          <tr>
-            <td>充分</td>
-            <td>＋现有页面代码、设计截图 / Figma / Relay、组件约束、失败案例、运行环境</td>
-            <td>前述全部,并 <span class="diff">更像一次可交付的视觉改造</span>:保留原结构,重写 CSS / 调整组件状态 / 补响应式和减少动态效果;还能指出哪些效果需要浏览器截图或代码检查验证。</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="3">以上为通常可形成的预期(非承诺);给得越准,结果越准。真实输出:HTML/CSS 直接写到 Claude 的回复里,或写到当前工作区的 .html 文件。真实输入:纯文字需求、设计图片(可读)、Relay/Figma 链接(配合其他 skill)、已有 HTML 片段。</td>
-          </tr>
-        </tfoot>
-      </table>
-    </section>
-
-    <section id="sec-6">
-      <h2>6. 完整度与改善点</h2>
+      <h2>5. 完整度与改善点</h2>
       <div class="content-grid">
         <div class="box">
           <div class="label">完整度 <span class="hot">88 / 100</span> — 可生产使用</div>
           <div class="value">55 行 <code>SKILL.md</code> 写得很精,从主题定位、设计计划、自我批判、代码落地到文案语气都有要求。扣分主要在缺少样例和可复用风格档案,不是核心机制。</div>
         </div>
         <div class="box">
-          <div class="label">改善点 1 — 补示例产物 <span class="warn">新用户不易感知差异</span></div>
+          <div class="label">改善点 1 — 补示例产物 <span class="caution">新用户不易感知差异</span></div>
           <div class="value">
             <strong>用户会看到:</strong>没有示例 HTML / 截图,新用户不知道"frontend-design 启用前 vs 启用后"差距在哪。<br>
             <strong>影响:</strong>低估 skill 的价值,或对它的产物有不切实际的期待。<br>
@@ -712,7 +730,7 @@
           </div>
         </div>
         <div class="box">
-          <div class="label">改善点 2 — 补风格档案 <span class="warn">多页面容易漂移</span></div>
+          <div class="label">改善点 2 — 补风格档案 <span class="caution">多页面容易漂移</span></div>
           <div class="value">
             <strong>用户会看到:</strong>单页效果往往不错,但多页面连续生成时,色板、字体、动效和组件状态可能逐页变化。<br>
             <strong>影响:</strong>做完整站点或产品时,后续页面会不像同一套系统。<br>
@@ -720,7 +738,7 @@
           </div>
         </div>
         <div class="box">
-          <div class="label">改善点 3 — 控制装饰强度 <span class="warn">场景错配时会过载</span></div>
+          <div class="label">改善点 3 — 控制装饰强度 <span class="caution">场景错配时会过载</span></div>
           <div class="value">
             <strong>用户会看到:</strong>对内部管理页、工具页、纯内容页,模型可能把"独特记忆点"做得过强,结果干扰阅读 / 操作。<br>
             <strong>影响:</strong>给非品牌场景做工具页时,需要主动说"克制,让结构服务信息"。<br>
@@ -728,7 +746,7 @@
           </div>
         </div>
         <div class="box">
-          <div class="label">改善点 4 — 验证仍要外接 <span class="warn">不能只看文字结果</span></div>
+          <div class="label">改善点 4 — 验证仍要外接 <span class="caution">不能只看文字结果</span></div>
           <div class="value">
             <strong>用户会看到:</strong><code>SKILL.md</code> 提到响应式、键盘焦点、减少动态效果和截图自查,但它自己不执行浏览器验证。<br>
             <strong>影响:</strong>对外交付前仍要实际打开页面,看移动端、交互状态和 CSS 是否互相覆盖。<br>
@@ -738,8 +756,8 @@
       </div>
     </section>
 
-    <section id="sec-7">
-      <h2>7. 适合谁用，不能做什么</h2>
+    <section id="sec-6">
+      <h2>6. 适合谁用，不能做什么</h2>
       <div class="content-grid">
         <div class="box">
           <div class="label">它能帮你做什么</div>

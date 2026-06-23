@@ -2,15 +2,15 @@
 
 > Made by [anastasia-mogu](https://github.com/anastasia-mogu) · MIT License
 
-把陌生 skill 解读成一份可以直接用的 HTML 说明书 —— 完整度评分、第一次试用提示词、搭配建议、产出对照、改善点全在一份报告里。
+把陌生 skill 解读成一份可以直接用的 HTML 说明书 —— 完整度评分、第一次试用提示词、搭配建议、真实产物示例、改善点全在一份报告里。
 
 > 适用平台:Claude Code、Codex / OpenAI Agent SDK、以及任何能加载 skill 目录的 Claude Agent。
 
 ## 当前版本
 
-当前版本:`v1.1.0`
+当前版本:`v1.2.0`
 
-这版是一次规则和模板迭代版:固定 7 节报告结构,新增产出物对照、Pro/Plus 复制块、交付前最小自检,并补充更多示例报告。
+这版是一次规则和模板迭代版:默认 6 节报告结构,有真实 example 时插入产出物示例,并新增 Pro/Plus 复制块和交付前最小自检。
 
 ## 它能做什么
 
@@ -20,8 +20,8 @@
 2. 给出 **0–100 完整度评分**和一句话推荐动作
 3. 写一段可直接复制的**第一次试用提示词**
 4. 在开始用的最下方给出**失败反馈入口**(哪里不对、带回什么、该改规则还是模板)
-5. 列出**搭配建议**(标明每个搭配对象是「已有」「需安装」还是「不确定」)
-6. 列出**产出物对照**(你多给什么,通常多拿到什么)
+5. 列出**搭配建议**(标签标明本机安装状态,星级放在分组标题里)
+6. 如果目标仓库自带可打开 example,列出**产出物示例**;没有就不硬凑
 7. 列出**改善点**和**适合边界 / 文件关系图**,默认产出自包含 HTML 报告到当前工作区
 
 ## 安装
@@ -71,18 +71,17 @@ skill-guide 的 `description` 已经覆盖以下问法,直接说就行,不用记
 
 要求:
 - 给完整度评分和推荐动作
-- 列出搭配建议(标明已有 / 需安装)
+- 列出搭配建议(标签标明本机安装状态,星级放在分组标题里)
 - 给一段第一次试用提示词
 - HTML 报告保存在当前工作区,聊天里只给摘要和路径
 ```
 
 ## 看产物长什么样
 
-仓库内已有三份示例,都是真实跑出来的产物(非编造):
+仓库内只保留两份核心示例,都是真实跑出来的产物(非编造):
 
 - [`examples/sample-report.html`](examples/sample-report.html) — skill-guide **自我解读**:展示对纯指导型 skill 的标准产物
 - [`examples/frontend-design-report.html`](examples/frontend-design-report.html) — skill-guide 解读 **Anthropic 官方 frontend-design**:展示对单 skill(指导型)的报告形态
-- [`examples/ppt-master-report.html`](examples/ppt-master-report.html) — skill-guide 解读 **ppt-master**:展示对工作流型 / 文件产物型 skill 的报告形态
 
 这些示例可以 `open` 直接用浏览器查看;也可以作为「我希望产物长这样」的参考喂给 skill-guide。
 
@@ -96,13 +95,24 @@ skill-guide/
 │   └── openai.yaml                # Codex / OpenAI 端的 UI 元数据
 ├── assets/
 │   └── report-template.html       # HTML 报告模板(自包含 CSS/JS)
+├── scripts/
+│   └── validate-report.py         # 示例报告结构校验脚本
 └── examples/
     ├── sample-report.html         # 自我解读示例
-    ├── frontend-design-report.html # 解读 frontend-design 示例
-    └── ppt-master-report.html      # 解读 ppt-master 示例
+    └── frontend-design-report.html # 解读 frontend-design 示例
 ```
 
-`SKILL.md` 是 skill 的主入口,定义了「读什么 → 评什么 → 输出什么」的 7 节流程;`assets/report-template.html` 是最终报告的 HTML 容器,包含响应式 CSS、复制按钮 JS、移动端适配,不依赖任何 CDN。当前报告顺序是:结论、快速判断、直接开始用、搭配、产出物对照、完整度与改善点、适合谁用与文件关系。`agents/openai.yaml` 只在 Codex / OpenAI 端用来渲染 skill 卡片,Claude Code 端不读它,但保留它对跨平台分发无害。
+`SKILL.md` 是 skill 的主入口,定义了「读什么 → 评什么 → 输出什么」的 6+1 流程;`assets/report-template.html` 是最终报告的 HTML 容器,包含响应式 CSS、复制按钮 JS、移动端适配,不依赖任何 CDN。当前报告顺序是:结论、快速判断、直接开始用、搭配、完整度与改善点、适合谁用与文件关系;只有发现现成可打开或可跳转的 example 时,才插入“产出物示例”。`agents/openai.yaml` 只在 Codex / OpenAI 端用来渲染 skill 卡片,Claude Code 端不读它,但保留它对跨平台分发无害。
+
+## 校验报告
+
+生成或修改 HTML 报告后,可以先跑结构校验:
+
+```bash
+python3 skill-guide/scripts/validate-report.py
+```
+
+它只检查 6/7 节结构、快速判断 5 格、复制块、搭配标签、星级、多 skill 清单和旧占位符残留;不替代内容判断、审美判断和浏览器预览。
 
 ## 不做什么
 
@@ -126,7 +136,7 @@ skill-guide/
 
 期望但没出现的:
 - [比如:multi-skill 仓库该有的工作流地图]
-- [比如:搭配对象的「已有 / 需安装」状态]
+- [比如:搭配对象的「本机已有 / 未安装 / 安装状态未知」标签和分组星级]
 
 修哪里:
 - 改 SKILL.md 的约束 / 改 report-template.html / 改我下次的提示词
@@ -147,11 +157,12 @@ rm ~/.claude/skills/skill-guide ~/.codex/skills/skill-guide
 
 ## 已知缺口
 
-- 输出前会做最小结构自检,用于防止 7 节结构、复制按钮、搭配标签、文件关系图等关键规则漂移;但它不替代人工审美判断和浏览器渲染检查。同一个 skill 跑两次,内容判断和版式细节仍可能需要人工把关。
-- 示例已有 3 份(自我解读 + 单 skill 指导型 + PPT 文件产物型),但 multi-skill 仓库 / 不是 skill 项目 / 文件编辑类高风险 skill 还缺对照样例。
+- 结构脚本可以防止章节结构、复制块、搭配标签、星级和文件关系图漂移;但它不替代人工审美判断、内容判断和浏览器渲染检查。
+- 示例只保留 2 份核心回归样例,避免仓库被示例产物撑大;多 skill 仓库、文件产物型、非 skill 项目和文件编辑类高风险 skill 仍要在真实任务里继续观察。
 
 ## 版本记录
 
+- `v1.2.0` — 报告改成默认 6 节,仅在存在真实可打开 example 时插入“产出物示例”;示例报告收敛为 2 份核心样例,新增结构校验脚本。
 - `v1.1.0` — 固定 7 节结构,新增产出物对照、Pro/Plus 复制块、交付前最小自检,同步更新模板和 3 份示例报告。
 - `v1.0.0` — 初始可用版,建立 skill-guide 的核心解读流程、HTML 报告模板和基础示例。
 
