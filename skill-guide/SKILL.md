@@ -14,6 +14,13 @@ homepage: https://github.com/anastasia-mogu/skill-guide
 
 ## 核心原则
 
+- **触发后先问模式，再动手**。收到解读请求后，第一件事是问用户：
+  > 要全量版还是轻量版？
+  > - **全量版**：完整 HTML 报告，7 节内容，约 25-35k token
+  > - **轻量版**：HTML 报告只含第 1/2/3 节＋第 5 节（有真实示例时）或第 4 节（无示例时），约 12-18k token
+  
+  等用户选择后再继续。选全量版按原有流程；选轻量版只输出上述节数，其余节省略不生成。
+
 - 先读再问。先检查目录结构、`SKILL.md`、`references/`、`scripts/`、`assets/`、`agents/openai.yaml`、明显入口文件和示例，再向用户补问。
 - 先识别对象类型。区分单 skill、skill 包、多 skill 仓库、普通项目内嵌 skill、非 skill 项目。
 - 解读阶段保持只读。发现问题先记录，不默认修复。
