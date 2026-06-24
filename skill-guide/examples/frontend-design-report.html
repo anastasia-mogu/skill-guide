@@ -555,7 +555,7 @@
 
     <nav class="toc" aria-label="目录">
       <a href="#sec-1"><span class="toc-num">01</span>一句话结论</a>
-      <a href="#sec-2"><span class="toc-num">02</span>快速判断<span class="toc-tag">含 token 预估</span></a>
+      <a href="#sec-2"><span class="toc-num">02</span>快速判断<span class="toc-tag">含使用成本预估</span></a>
       <a href="#sec-3"><span class="toc-num">03</span>直接开始用</a>
       <a href="#sec-4"><span class="toc-num">04</span>和什么技能最搭配</a>
       <a href="#sec-5"><span class="toc-num">05</span>完整度与改善点</a>
@@ -604,9 +604,9 @@
           <div class="judge-note">它只影响 Claude 写前端时的风格偏向,不动文件、不调用接口、不需要登录。</div>
         </div>
         <div class="span-all">
-          <div class="label">token 消耗预估</div>
-          <div class="judge-value"><span class="ok">轻 ~3-5k</span><span class="judge-note" style="display:inline;margin-left:10px">粗略示意</span></div>
-          <div class="judge-note">纯指导型、SKILL.md 55 行、无脚本无 examples,属最轻档。影响因素:是否深读 references、是否多 skill 仓库、是否生成 HTML。省 token:先不深读引用文件、按需再补;多 skill 仓库先做包级解读,不一次性深读整库。</div>
+          <div class="label">使用成本预估</div>
+          <div class="judge-value"><span class="ok">中等</span></div>
+          <div class="judge-note">这是以后使用 frontend-design 生成页面时的大致消耗,不是生成本说明书的成本。它会先写设计计划、自查默认模板感,再生成页面代码;单个小组件偏轻,完整单页通常可能到一万 token 以上,多页面或多轮视觉返修会更高。省 token:先确认风格档案,再分页面生成。</div>
         </div>
       </div>
     </section>

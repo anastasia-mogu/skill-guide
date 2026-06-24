@@ -99,8 +99,8 @@ def validate(path: Path) -> list[str]:
     sec2 = section_html(html, 2)
     if sec2.count('class="judge-value"') != 5:
         errors.append("快速判断必须有 5 个 judge-value")
-    if 'class="span-all"' not in sec2 or "token 消耗预估" not in sec2:
-        errors.append("快速判断必须有横跨整行的 token 消耗预估")
+    if 'class="span-all"' not in sec2 or "使用成本预估" not in sec2:
+        errors.append("快速判断必须有横跨整行的使用成本预估")
     if "改善点" in html:
         for label_html in re.findall(r'<div class="label">改善点.*?</div>', html, flags=re.S):
             if 'class="warn"' in label_html:
